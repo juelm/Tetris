@@ -32,7 +32,19 @@ namespace Tetris
             Console.Clear();
             Console.CursorVisible = false;
             board.drawBoard();
-            current = new L(x + board.Width / 2 - 2, y + 1);
+            current = new Shape(x + board.Width / 2 - 2, y + 1, ConsoleColor.Green);
+
+            int[] pos1 ={
+                0, 0, 0, 0, 0,
+                0, 0, 1, 1, 0,
+                0, 0, 0, 1, 0,
+                0, 0, 0, 1, 0,
+                0, 0, 0, 0, 0 };
+
+            current.Arrange(pos1);
+
+            current.render();
+
             current.Move(ConsoleKey.DownArrow);
 
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
@@ -44,6 +56,7 @@ namespace Tetris
             while (action == ConsoleKey.UpArrow || action == ConsoleKey.DownArrow || action == ConsoleKey.LeftArrow || action == ConsoleKey.RightArrow)
             {
                 action = Console.ReadKey().Key;
+
                 if(action == ConsoleKey.UpArrow)
                 {
                     current.Mutate();
@@ -52,7 +65,6 @@ namespace Tetris
                 {
                     current.Move(action);
                 }
-                
 
             }
         }
