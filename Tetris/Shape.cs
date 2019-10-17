@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Timers;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace Tetris
 {
-    public abstract class Shape
+    public class Shape
     {
 
         protected Block[] arrangement;
@@ -12,35 +13,197 @@ namespace Tetris
         protected int y;
         protected Block[] blocks = new Block[4];
         protected Block[] prior = new Block[4];
+        protected ConsoleColor color;
+        protected Dictionary<int, int[]> configurations= new Dictionary<int, int[]>();
+        protected int configuration = 1;
 
-        public void Shift(ConsoleKey direction, int magnitude)
+        public Shape (int x, int y, int rando)
         {
+            this.x = x;
+            this.y = y;
+            //this.color = color;
 
-
-            for (int i = 3; i >=0; i--)
+            if(rando == 0)
             {
-                switch (direction)
-                {
-                    case ConsoleKey.LeftArrow:
-                        prior[i] = blocks[i];
-                        blocks[i].erase();
-                        blocks[i].X -= magnitude;
-                        break;
-                    case ConsoleKey.RightArrow:
-                        prior[i] = blocks[i];
-                        blocks[i].erase();
-                        blocks[i].X += magnitude;
-                        break;
-                    case ConsoleKey.DownArrow:
-                        prior[i] = blocks[i];
-                        blocks[i].erase();
-                        blocks[i].Y += magnitude;
-                        break;
-                }
+                this.color = ConsoleColor.Green;
+                int[]pos1 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
 
-                blocks[i].draw();
-                prior[i].erase();
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                        0, 1, 1, 1, 0,
+                        0, 1, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos3 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 1, 0, 0, 0,
+                        0, 1, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+
             }
+            else if(rando == 1)
+            {
+                this.color = ConsoleColor.Yellow;
+                int[] pos1 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 1, 0, 0, 0,
+                        0, 1, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos3 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 1, 1,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+            }
+            else if (rando == 2)
+            {
+                this.color = ConsoleColor.Red;
+                int[] pos1 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 1, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos3 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 1, 0, 0, 0,
+                        0, 1, 0, 0, 0
+                    };
+
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+            }
+            else if (rando == 3)
+            {
+                this.color = ConsoleColor.Yellow;
+                int[] pos1 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 1, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos3 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+            }
+
+
+
+
         }
 
         public Block [] getBlocks()
@@ -48,9 +211,24 @@ namespace Tetris
             return blocks;
         }
 
-        public void Stop()
+        public void render()
         {
+            Console.SetCursorPosition(1, 1);
+            Console.Write($"X: {x}, Y: {y} ");
+            foreach (Block bk in blocks)
+            {
+                bk.draw();
+            }
+        }
 
+        public void delete()
+        {
+            Console.SetCursorPosition(1, 2);
+            Console.Write(prior.Length);
+            foreach (Block bk in prior)
+            {
+                bk.erase();
+            }
         }
 
         public void Move(ConsoleKey pressed)
@@ -59,20 +237,91 @@ namespace Tetris
             {
                 case ConsoleKey.LeftArrow:
                     x -= 1;
-                    Shift(ConsoleKey.LeftArrow, 1);
                     break;
                 case ConsoleKey.RightArrow:
                     x += 1;
-                    Shift(ConsoleKey.RightArrow, 1);
                     break;
                 case ConsoleKey.DownArrow:
                     y += 1;
-                    Shift(ConsoleKey.DownArrow, 1);
                     break;
+            }
+
+            //int index = 0;
+            //foreach(Block blk in blocks)
+            //{
+            //    Block temp = new Block(blk.X, blk.Y, color);
+            //    temp.inflate();
+            //    prior[0] = temp;
+            //    temp.erase();
+            //    blk.Shift(pressed);
+            //}
+
+            Arrange(configurations[configuration]);
+
+            delete();
+
+            render();
+
+        }
+
+        public void Arrange(int[] arr)
+        {
+
+            //prior = blocks;
+
+            int posX = x;
+            int posY = y;
+
+            Block bk = new Block(posX, posY, color);
+
+            int addHeight = bk.Height;
+            int addWidth = bk.Width;
+
+            int blockIndex = 0;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (i % 5 == 0)
+                {
+                    posY += addHeight;
+                    posX = x;
+                }
+
+                else
+                {
+                    posX += addWidth;
+                }
+
+                if (arr[i] == 1)
+                {
+                    Block blk = new Block(posX, posY, color);
+                    prior[blockIndex] = blocks[blockIndex];
+                    blk.inflate();
+                    blocks[blockIndex] = blk;
+                    blockIndex++;
+                }
+
             }
         }
 
-        public abstract void Mutate();
+        public void Mutate()
+        {
+            if (configuration == 4){
+                configuration = 1;
+            }
+            else
+            {
+                configuration++;
+            }
+            
+            Arrange(configurations[configuration]);
+
+            delete();
+
+            render();
+        }
+
+        //public abstract void Arrange(int[] arr);
 
     }
 }
