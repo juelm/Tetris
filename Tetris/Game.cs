@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Timers;
 using System.Drawing;
+using System.Collections.Generic;
+
 namespace Tetris
 {
     public class Game
@@ -11,8 +13,9 @@ namespace Tetris
         private int y;
         private Board board;
         private Shape current;
-        private Shape[] state;
-        
+        private List<Block> state = new List<Block>();
+        private Random rando = new Random();
+
 
 
         public Game(int x, int y, int height, int width, int ms)
@@ -22,9 +25,6 @@ namespace Tetris
             Point p = new Point(x, y);
             board = new Board(width, height, p);
             timer = new Timer(ms);
-            state = new Shape[100];
-
-
         }
 
         public void playGame()
@@ -32,16 +32,9 @@ namespace Tetris
             Console.Clear();
             Console.CursorVisible = false;
             board.drawBoard();
-            current = new Shape(x + board.Width / 2 - 2, y + 1, ConsoleColor.Green);
+            current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
 
-            int[] pos1 ={
-                0, 0, 0, 0, 0,
-                0, 0, 1, 1, 0,
-                0, 0, 0, 1, 0,
-                0, 0, 0, 1, 0,
-                0, 0, 0, 0, 0 };
-
-            current.Arrange(pos1);
+            current.Arrange();
 
             current.render();
 
@@ -50,49 +43,99 @@ namespace Tetris
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             timer.Enabled = true;
 
-            ConsoleKey action = ConsoleKey.UpArrow;
+            ConsoleKey userInput = ConsoleKey.UpArrow;
 
-
-            while (action == ConsoleKey.UpArrow || action == ConsoleKey.DownArrow || action == ConsoleKey.LeftArrow || action == ConsoleKey.RightArrow)
+            while (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow)
             {
-                action = Console.ReadKey().Key;
+                userInput = Console.ReadKey().Key;
 
-                if(action == ConsoleKey.UpArrow)
-                {
-                    current.Mutate();
-                }
-                else
-                {
-                    current.Move(action);
-                }
+                processInput(userInput);
 
             }
         }
 
+
         public void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            //current.Fall();
+            processInput(ConsoleKey.DownArrow);
 
-            //if ()
-            //{
-
-            //}
         }
-    }
 
-        //public void checkEdge(Board bo, Shape sh)
-        //{
-        //    Block[] blks = sh.getBlocks();
-        //    foreach (Block blk in blks)
-        //    {
-        //        Point[] pts = blk.getArea();
-        //        foreach(Point pt in pts)
-        //        {
-                    
-        //        }
-        //    }
-        //}
+        public void processInput(ConsoleKey action)
+        {
+
+            if (action == ConsoleKey.UpArrow)
+            {
+                current.Mutate();
+            }
+            else
+            {
+
+                bool hitEdge = false;
+                List<Point> edges = board.getBorders();
+
+                if (action == ConsoleKey.LeftArrow)
+                {
+                    foreach (Point pt in edges)
+                    {
+                        hitEdge = checkEveryPoint(pt.X + 1, pt.Y);
+                        if (hitEdge) break;
+                    }
+
+                    if (!hitEdge) current.Move(action);
+                }
+
+                if (action == ConsoleKey.RightArrow)
+                {
+                    foreach (Point pt in edges)
+                    {
+                        hitEdge = checkEveryPoint(pt.X - 1, pt.Y);
+                        if (hitEdge) break;
+                    }
+
+                    if (!hitEdge) current.Move(action);
+                }
+
+                if (action == ConsoleKey.DownArrow)
+                {
+                    foreach (Point pt in edges)
+                    {
+                        hitEdge = checkEveryPoint(pt.X, pt.Y - 1);
+                        if (hitEdge) break;
+                    }
+
+                    if (!hitEdge) current.Move(action);
+                    else
+                    {
+                        foreach(Block blk in current.getBlocks())
+                        {
+                            state.Add(blk);
+                            current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
+                            current.Arrange();
+                            current.render();
+                        }
+                    }
+                }
+            }
 
 
-   
+        }
+
+        public bool checkEveryPoint(int xCoord, int yCoord)
+        {
+            bool didCollide = false;
+            foreach(Block blk in current.getBlocks())
+            {
+                foreach(Point pt in blk.getArea())
+                {
+                    if(xCoord == pt.X && yCoord == pt.Y)
+                    {
+                        didCollide = true;
+                        break;
+                    }
+                }
+            }
+            return didCollide;
+        }
+    } 
 }

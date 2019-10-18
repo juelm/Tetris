@@ -128,51 +128,6 @@ namespace Tetris
 
         }
 
-        //public void draw()
-        //{
-        //    Console.SetCursorPosition(x, y);
-        //    //Console.ForegroundColor = color;
-        //    int index = 0;
-            
-
-        //    for(int i = 0; i < height; i++)
-        //    {
-
-        //        for (int j = 0; j < height * 2; j++)
-        //        {
-        //            Point current = new Point(Console.CursorLeft, Console.CursorTop);
-        //            area[index] = current;
-        //            Console.BackgroundColor = color;
-        //            Console.Write(" ");
-        //        }
-        //        Console.WriteLine();
-        //    }
-
-
-        //    Console.ResetColor();
-        //}
-
-        //public void erase()
-        //{
-        //    Console.SetCursorPosition(x, y);
-        //    //Console.ForegroundColor = color;
-        //    int index = 0;
-
-
-        //    for (int i = 0; i < height; i++)
-        //    {
-
-        //        for (int j = 0; j < height * 2; j++)
-        //        {
-        //            Console.BackgroundColor = ConsoleColor.Black;
-        //            Console.Write(" ");
-        //        }
-        //        Console.WriteLine();
-        //    }
-
-        //    Console.ResetColor();
-        //}
-
         public void erase()
         {
             //int index = 0;

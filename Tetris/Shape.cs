@@ -17,6 +17,22 @@ namespace Tetris
         protected Dictionary<int, int[]> configurations= new Dictionary<int, int[]>();
         protected int configuration = 1;
 
+        public int X
+        {
+            get
+            {
+                return x;
+            }
+        }
+
+        public int Y
+        {
+            get
+            {
+                return y;
+            }
+        }
+
         public Shape (int x, int y, int rando)
         {
             this.x = x;
@@ -189,8 +205,52 @@ namespace Tetris
                 int[] pos4 =
                     {
                         0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
+                        0, 1, 0, 0, 0,
                         0, 1, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+            }
+            else if (rando == 4)
+            {
+                this.color = ConsoleColor.Yellow;
+                int[] pos1 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos3 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 1, 0,
                         0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0
                     };
@@ -200,10 +260,50 @@ namespace Tetris
                 configurations.Add(3, pos3);
                 configurations.Add(4, pos4);
             }
+            else if (rando == 5)
+            {
+                this.color = ConsoleColor.Yellow;
+                int[] pos1 =
+                    {
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0
+                    };
 
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                        1, 1, 1, 1, 1,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
 
+                int[] pos3 =
+                    {
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 0, 0
+                    };
 
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                        1, 1, 1, 1, 1,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
 
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+            }
         }
 
         public Block [] getBlocks()
@@ -246,17 +346,7 @@ namespace Tetris
                     break;
             }
 
-            //int index = 0;
-            //foreach(Block blk in blocks)
-            //{
-            //    Block temp = new Block(blk.X, blk.Y, color);
-            //    temp.inflate();
-            //    prior[0] = temp;
-            //    temp.erase();
-            //    blk.Shift(pressed);
-            //}
-
-            Arrange(configurations[configuration]);
+            Arrange();
 
             delete();
 
@@ -264,10 +354,10 @@ namespace Tetris
 
         }
 
-        public void Arrange(int[] arr)
+        public void Arrange()
         {
 
-            //prior = blocks;
+            int[] arr = configurations[configuration];
 
             int posX = x;
             int posY = y;
@@ -314,14 +404,12 @@ namespace Tetris
                 configuration++;
             }
             
-            Arrange(configurations[configuration]);
+            Arrange();
 
             delete();
 
             render();
         }
-
-        //public abstract void Arrange(int[] arr);
 
     }
 }
