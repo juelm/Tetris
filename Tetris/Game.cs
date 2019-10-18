@@ -72,6 +72,7 @@ namespace Tetris
             {
 
                 bool hitEdge = false;
+                bool hitBlock = false;
                 List<Point> edges = board.getBorders();
 
                 if (action == ConsoleKey.LeftArrow)
@@ -82,7 +83,16 @@ namespace Tetris
                         if (hitEdge) break;
                     }
 
-                    if (!hitEdge) current.Move(action);
+                    foreach (Block blk in state)
+                    {
+                        foreach (Point p in blk.getArea())
+                        {
+                            hitBlock = checkEveryPoint(p.X + 1, p.Y);
+                            if (hitBlock) break;
+                        }
+                    }
+
+                    if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
                 if (action == ConsoleKey.RightArrow)
@@ -93,7 +103,16 @@ namespace Tetris
                         if (hitEdge) break;
                     }
 
-                    if (!hitEdge) current.Move(action);
+                    foreach (Block blk in state)
+                    {
+                        foreach (Point p in blk.getArea())
+                        {
+                            hitBlock = checkEveryPoint(p.X - 1, p.Y);
+                            if (hitBlock) break;
+                        }
+                    }
+
+                    if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
                 if (action == ConsoleKey.DownArrow)
@@ -104,16 +123,34 @@ namespace Tetris
                         if (hitEdge) break;
                     }
 
-                    if (!hitEdge) current.Move(action);
+                    foreach (Block blk in state)
+                    {
+                        foreach (Point p in blk.getArea())
+                        {
+                            hitBlock = checkEveryPoint(p.X, p.Y - 1);
+                            if (hitBlock) break;
+                        }
+                    }
+
+                    if (!hitEdge && !hitBlock) current.Move(action);
                     else
                     {
                         foreach(Block blk in current.getBlocks())
                         {
                             state.Add(blk);
-                            current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
-                            current.Arrange();
-                            current.render();
+
+                            int index = 51;
+                            foreach(Block bk in state)
+                            {
+                                Console.SetCursorPosition(71, index);
+                                Console.Write($"X: {bk.X}, Y: {bk.Y}");
+                                index++;
+                            }
                         }
+
+                        current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
+                        current.Arrange();
+                        current.render();
                     }
                 }
             }
@@ -137,5 +174,23 @@ namespace Tetris
             }
             return didCollide;
         }
+
+        //public bool checkEvery(Block[] blockArray, Block[] obstacles)
+        //{
+        //    bool collided = false;
+        //    foreach (Block ob in obstacles)
+        //    {
+        //        foreach (Point pt in ob.getArea())
+        //        {
+        //            if (xCoord == pt.X && yCoord == pt.Y)
+        //            {
+        //                didCollide = true;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    return collided;
+
+        //}
     } 
 }

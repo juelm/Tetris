@@ -11,8 +11,8 @@ namespace Tetris
         protected Block[] arrangement;
         protected int x;
         protected int y;
-        protected Block[] blocks = new Block[4];
-        protected Block[] prior = new Block[4];
+        protected Block[] blocks;
+        protected Block[] prior;
         protected ConsoleColor color;
         protected Dictionary<int, int[]> configurations= new Dictionary<int, int[]>();
         protected int configuration = 1;
@@ -42,6 +42,8 @@ namespace Tetris
             if(rando == 0)
             {
                 this.color = ConsoleColor.Green;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
                 int[]pos1 =
                     {
                         0, 0, 0, 0, 0,
@@ -87,6 +89,8 @@ namespace Tetris
             else if(rando == 1)
             {
                 this.color = ConsoleColor.Yellow;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
                 int[] pos1 =
                     {
                         0, 0, 0, 0, 0,
@@ -131,6 +135,8 @@ namespace Tetris
             else if (rando == 2)
             {
                 this.color = ConsoleColor.Red;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
                 int[] pos1 =
                     {
                         0, 0, 0, 0, 0,
@@ -175,6 +181,8 @@ namespace Tetris
             else if (rando == 3)
             {
                 this.color = ConsoleColor.Yellow;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
                 int[] pos1 =
                     {
                         0, 0, 0, 0, 0,
@@ -219,6 +227,8 @@ namespace Tetris
             else if (rando == 4)
             {
                 this.color = ConsoleColor.Yellow;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
                 int[] pos1 =
                     {
                         0, 0, 0, 0, 0,
@@ -263,6 +273,8 @@ namespace Tetris
             else if (rando == 5)
             {
                 this.color = ConsoleColor.Yellow;
+                this.blocks = new Block[5];
+                this.prior = new Block[5];
                 int[] pos1 =
                     {
                         0, 0, 1, 0, 0,
