@@ -7,15 +7,15 @@ namespace Tetris
     class Program
     {
 
-        static int startX = 0;
-        static int startY = 0;
-        static int height = 50;
-        static int width = 70;
-        static int ms = 100;
+        public static int startX = 5;
+        public static int startY = 5;
+        public static int boardHeight = 50;
+        public static int boardWidth = 70;
+        public static int ms = 500;
 
         static void Main(string[] args)
         {
-            Game game = new Game(startX, startY, height, width, ms);
+            Game game = new Game(startX, startY, boardHeight, boardWidth, ms);
             game.playGame();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 namespace Tetris
 {
@@ -7,6 +8,7 @@ namespace Tetris
         private int height;
         private int width;
         private Point start;
+        private List<Point> borders = new List<Point>();
 
         public int Height
         {
@@ -23,6 +25,18 @@ namespace Tetris
                 return width;
             }
         }
+        public Point Start
+        {
+            get
+            {
+                return start;
+            }
+        }
+
+        public List<Point> getBorders()
+        {
+            return borders;
+        }
 
         public Board(int x, int y, Point pt)
         {
@@ -33,26 +47,57 @@ namespace Tetris
 
         }
 
-        public void drawBoard()
-        {
-            for (int i = 0; i < height; i++)
-            {
-                Console.Write('+');
 
-                for (int j = 1; j < width - 1; j++)
+        private void createBoard()
+        {
+            for (int i = start.Y; i <= start.Y + height; i++)
+            {
+                for (int j = start.X; j <= start.X + width; j++)
                 {
-                    if(i == 0 || i == height - 1)
+                    if (i == start.Y || i == start.Y + height)
                     {
-                        Console.Write("-");
+                        borders.Add(new Point(j, i));
+
                     }
-                    else
+                    else if(j == start.X || j == start.X + width)
                     {
-                        Console.Write(" ");
+                        borders.Add(new Point(j, i));
                     }
                 }
-                Console.Write('+');
-                Console.WriteLine();
             }
         }
+
+        public void drawBoard()
+        {
+            createBoard();
+
+            foreach(Point p in borders)
+            {
+                Console.SetCursorPosition(p.X, p.Y);
+                Console.Write("#");
+            }
+        }
+
+        //public void drawBoard()
+        //{
+        //    for (int i = 0; i <= height + 1; i++)
+        //    {
+        //        Console.Write('+');
+
+        //        for (int j = 1; j <= width + 1; j++)
+        //        {
+        //            if(i == 0 || i == height + 1)
+        //            {
+        //                Console.Write("-");
+        //            }
+        //            else
+        //            {
+        //                Console.Write(" ");
+        //            }
+        //        }
+        //        Console.Write('+');
+        //        Console.WriteLine();
+        //    }
+        //}
     }
 }
