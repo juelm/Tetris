@@ -143,5 +143,30 @@ namespace Tetris
 
             Console.ResetColor();
         }
+
+        public bool checkEveryPoint(int xCoord, int yCoord)
+        {
+            bool didCollide = false;
+                foreach (Point pt in area)
+                {
+                    if (xCoord == pt.X && yCoord == pt.Y)
+                    {
+                        didCollide = true;
+                        return true;
+                    }
+                }
+            return didCollide;
+        }
+
+        public bool checkBlock(Block b, int xOffset, int yOffset)
+        {
+            bool collision = false;
+            foreach(Point p in b.area)
+            {
+                collision = checkEveryPoint(p.X + xOffset, p.Y + yOffset);
+                if (collision) break;
+            }
+            return collision;
+        }
     }
 }

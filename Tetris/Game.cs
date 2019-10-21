@@ -57,7 +57,7 @@ namespace Tetris
 
         public void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            processInput(ConsoleKey.DownArrow);
+            //processInput(ConsoleKey.DownArrow);
 
         }
 
@@ -72,70 +72,79 @@ namespace Tetris
             {
 
                 bool hitEdge = false;
+                bool hitBlock = false;
                 List<Point> edges = board.getBorders();
 
                 if (action == ConsoleKey.LeftArrow)
                 {
-                    foreach (Point pt in edges)
-                    {
-                        hitEdge = checkEveryPoint(pt.X + 1, pt.Y);
-                        if (hitEdge) break;
-                    }
 
-                    if (!hitEdge) current.Move(action);
+                    hitEdge = checkBorders(edges, current, 1, 1);
+                    hitBlock = checkCollision(current, state, 1, 0);
+
+                    if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
                 if (action == ConsoleKey.RightArrow)
                 {
-                    foreach (Point pt in edges)
-                    {
-                        hitEdge = checkEveryPoint(pt.X - 1, pt.Y);
-                        if (hitEdge) break;
-                    }
 
-                    if (!hitEdge) current.Move(action);
+                    hitEdge = checkBorders(edges, current, -1, 0);
+                    hitBlock = checkCollision(current, state, -1, 0);
+
+                    if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
                 if (action == ConsoleKey.DownArrow)
                 {
-                    foreach (Point pt in edges)
-                    {
-                        hitEdge = checkEveryPoint(pt.X, pt.Y - 1);
-                        if (hitEdge) break;
-                    }
 
-                    if (!hitEdge) current.Move(action);
+                    hitEdge = checkBorders(edges, current, 0, -1);
+                    hitBlock = checkCollision(current, state, 0, -1);
+
+                    if (!hitEdge && !hitBlock) current.Move(action);
                     else
                     {
                         foreach(Block blk in current.getBlocks())
                         {
                             state.Add(blk);
-                            current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
-                            current.Arrange();
-                            current.render();
+
+                            int index = 51;
+                            foreach(Block bk in state)
+                            {
+                                Console.SetCursorPosition(71, index);
+                                Console.Write($"X: {bk.X}, Y: {bk.Y}");
+                                index++;
+                            }
                         }
+
+                        current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
+                        current.Arrange();
+                        current.render();
                     }
                 }
             }
-
-
         }
 
-        public bool checkEveryPoint(int xCoord, int yCoord)
+        public bool checkBorders(List<Point> borders, Shape cur, int xOffset, int yOffset)
         {
             bool didCollide = false;
-            foreach(Block blk in current.getBlocks())
+            foreach (Point p in borders)
             {
-                foreach(Point pt in blk.getArea())
-                {
-                    if(xCoord == pt.X && yCoord == pt.Y)
-                    {
-                        didCollide = true;
-                        break;
-                    }
-                }
+                didCollide = cur.checkPoints(p, xOffset, yOffset);
+                if (didCollide) break;
             }
             return didCollide;
+        }
+
+        public bool checkCollision(Shape cur, List<Block> obstacles, int xOffset, int yOffset)
+        {
+            bool collided = false;
+
+            foreach (Block ob in obstacles)
+            {
+                collided = current.checkBlocks(ob, xOffset, yOffset);
+                if (collided) break;
+            }
+            return collided;
+
         }
     } 
 }
