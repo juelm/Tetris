@@ -180,7 +180,7 @@ namespace Tetris
             }
             else if (rando == 3)
             {
-                this.color = ConsoleColor.Yellow;
+                this.color = ConsoleColor.DarkBlue;
                 this.blocks = new Block[4];
                 this.prior = new Block[4];
                 int[] pos1 =
@@ -226,7 +226,7 @@ namespace Tetris
             }
             else if (rando == 4)
             {
-                this.color = ConsoleColor.Yellow;
+                this.color = ConsoleColor.Cyan;
                 this.blocks = new Block[4];
                 this.prior = new Block[4];
                 int[] pos1 =
@@ -272,7 +272,7 @@ namespace Tetris
             }
             else if (rando == 5)
             {
-                this.color = ConsoleColor.Yellow;
+                this.color = ConsoleColor.DarkMagenta;
                 this.blocks = new Block[5];
                 this.prior = new Block[5];
                 int[] pos1 =
@@ -423,5 +423,36 @@ namespace Tetris
             render();
         }
 
+        public bool checkBlocks(Block obstacle, int xOffset, int yOffset)
+        {
+            bool collided = false;
+
+                foreach (Block blk in blocks)
+                {
+                    collided = blk.checkBlock(obstacle, xOffset, yOffset);
+                    if (collided) return true;
+                }
+
+            return collided;
+
+        }
+
+        public bool checkPoints(Point p, int xOffset, int yOffset)
+        {
+            bool collided = false;
+
+            foreach (Block blk in blocks)
+            {
+                collided = blk.checkEveryPoint(p.X + xOffset, p.Y + yOffset);
+                if (collided)
+                {
+                    collided = true;
+                    break;
+                }
+            }
+
+            return collided;
+
+        }
     }
 }

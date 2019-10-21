@@ -57,7 +57,7 @@ namespace Tetris
 
         public void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            processInput(ConsoleKey.DownArrow);
+            //processInput(ConsoleKey.DownArrow);
 
         }
 
@@ -77,60 +77,27 @@ namespace Tetris
 
                 if (action == ConsoleKey.LeftArrow)
                 {
-                    foreach (Point pt in edges)
-                    {
-                        hitEdge = checkEveryPoint(pt.X + 1, pt.Y);
-                        if (hitEdge) break;
-                    }
 
-                    foreach (Block blk in state)
-                    {
-                        foreach (Point p in blk.getArea())
-                        {
-                            hitBlock = checkEveryPoint(p.X + 1, p.Y);
-                            if (hitBlock) break;
-                        }
-                    }
+                    hitEdge = checkBorders(edges, current, 1, 1);
+                    hitBlock = checkCollision(current, state, 1, 0);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
                 if (action == ConsoleKey.RightArrow)
                 {
-                    foreach (Point pt in edges)
-                    {
-                        hitEdge = checkEveryPoint(pt.X - 1, pt.Y);
-                        if (hitEdge) break;
-                    }
 
-                    foreach (Block blk in state)
-                    {
-                        foreach (Point p in blk.getArea())
-                        {
-                            hitBlock = checkEveryPoint(p.X - 1, p.Y);
-                            if (hitBlock) break;
-                        }
-                    }
+                    hitEdge = checkBorders(edges, current, -1, 0);
+                    hitBlock = checkCollision(current, state, -1, 0);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
                 if (action == ConsoleKey.DownArrow)
                 {
-                    foreach (Point pt in edges)
-                    {
-                        hitEdge = checkEveryPoint(pt.X, pt.Y - 1);
-                        if (hitEdge) break;
-                    }
 
-                    foreach (Block blk in state)
-                    {
-                        foreach (Point p in blk.getArea())
-                        {
-                            hitBlock = checkEveryPoint(p.X, p.Y - 1);
-                            if (hitBlock) break;
-                        }
-                    }
+                    hitEdge = checkBorders(edges, current, 0, -1);
+                    hitBlock = checkCollision(current, state, 0, -1);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                     else
@@ -154,43 +121,30 @@ namespace Tetris
                     }
                 }
             }
-
-
         }
 
-        public bool checkEveryPoint(int xCoord, int yCoord)
+        public bool checkBorders(List<Point> borders, Shape cur, int xOffset, int yOffset)
         {
             bool didCollide = false;
-            foreach(Block blk in current.getBlocks())
+            foreach (Point p in borders)
             {
-                foreach(Point pt in blk.getArea())
-                {
-                    if(xCoord == pt.X && yCoord == pt.Y)
-                    {
-                        didCollide = true;
-                        break;
-                    }
-                }
+                didCollide = cur.checkPoints(p, xOffset, yOffset);
+                if (didCollide) break;
             }
             return didCollide;
         }
 
-        //public bool checkEvery(Block[] blockArray, Block[] obstacles)
-        //{
-        //    bool collided = false;
-        //    foreach (Block ob in obstacles)
-        //    {
-        //        foreach (Point pt in ob.getArea())
-        //        {
-        //            if (xCoord == pt.X && yCoord == pt.Y)
-        //            {
-        //                didCollide = true;
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    return collided;
+        public bool checkCollision(Shape cur, List<Block> obstacles, int xOffset, int yOffset)
+        {
+            bool collided = false;
 
-        //}
+            foreach (Block ob in obstacles)
+            {
+                collided = current.checkBlocks(ob, xOffset, yOffset);
+                if (collided) break;
+            }
+            return collided;
+
+        }
     } 
 }
