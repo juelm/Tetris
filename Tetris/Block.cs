@@ -54,7 +54,7 @@ namespace Tetris
             }
         }
 
-        public int Height
+        public static int Height
         {
             get
             {
@@ -62,7 +62,7 @@ namespace Tetris
             }
         }
 
-        public int Width
+        public static int Width
         {
             get
             {

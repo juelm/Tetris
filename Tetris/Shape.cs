@@ -348,10 +348,10 @@ namespace Tetris
             switch (pressed)
             {
                 case ConsoleKey.LeftArrow:
-                    x -= 1;
+                    x -= Block.Width;
                     break;
                 case ConsoleKey.RightArrow:
-                    x += 1;
+                    x += Block.Width;
                     break;
                 case ConsoleKey.DownArrow:
                     y += 1;
@@ -360,13 +360,36 @@ namespace Tetris
 
             Arrange();
 
-
-
             delete();
 
             render();
 
         }
+
+        //public void Move(ConsoleKey pressed)
+        //{
+        //    switch (pressed)
+        //    {
+        //        case ConsoleKey.LeftArrow:
+        //            x -= 1;
+        //            break;
+        //        case ConsoleKey.RightArrow:
+        //            x += 1;
+        //            break;
+        //        case ConsoleKey.DownArrow:
+        //            y += 1;
+        //            break;
+        //    }
+
+        //    Arrange();
+
+
+
+        //    delete();
+
+        //    render();
+
+        //}
 
         public void Arrange()
         {
@@ -376,10 +399,10 @@ namespace Tetris
             int posX = x;
             int posY = y;
 
-            Block bk = new Block(posX, posY, color);
+            //Block bk = new Block(posX, posY, color);
 
-            int addHeight = bk.Height;
-            int addWidth = bk.Width;
+            int addHeight = Block.Height;
+            int addWidth = Block.Width;
 
             int blockIndex = 0;
 

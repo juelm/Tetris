@@ -15,6 +15,7 @@ namespace Tetris
         private Shape current;
         private List<Block> state;
         private Random rando = new Random();
+        private int delay = 0;
 
 
 
@@ -33,7 +34,7 @@ namespace Tetris
             Console.Clear();
             Console.CursorVisible = false;
             board.drawBoard();
-            current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
+            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(6));
 
             current.Arrange();
 
@@ -106,14 +107,25 @@ namespace Tetris
 
                     else
                     {
-                        foreach (Block blk in current.getBlocks())
+                        if(delay == 1)
                         {
-                            state.Add(blk);
+                            foreach (Block blk in current.getBlocks())
+                            {
+                                state.Add(blk);
+                            }
+
+                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(6));
+                            current.Arrange();
+                            current.render();
+
+                            delay = 0;
                         }
 
-                        current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
-                        current.Arrange();
-                        current.render();
+                        else
+                        {
+                            delay++;
+                        }
+
                     }
                 }
             }
