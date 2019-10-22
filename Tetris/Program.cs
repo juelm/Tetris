@@ -9,8 +9,10 @@ namespace Tetris
 
         public static int startX = 5;
         public static int startY = 5;
-        public static int boardHeight = 50;
-        public static int boardWidth = 70;
+        //public static int blockHeight = 1;
+        //public static int blockWidth = blockHeight * 2;
+        public static int boardHeight = Block.Height * 30;
+        public static int boardWidth = Block.Width * 20 + 3;
         public static int ms = 500;
 
         static void Main(string[] args)

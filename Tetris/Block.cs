@@ -15,6 +15,14 @@ namespace Tetris
 
         public Point Position { set; get; }
 
+        public ConsoleColor Color
+        {
+            get
+            {
+                return color;
+            }
+        }
+
         public Point[] getArea()
         {
             return area;
@@ -46,7 +54,7 @@ namespace Tetris
             }
         }
 
-        public int Height
+        public static int Height
         {
             get
             {
@@ -54,7 +62,7 @@ namespace Tetris
             }
         }
 
-        public int Width
+        public static int Width
         {
             get
             {
@@ -68,7 +76,7 @@ namespace Tetris
             this.x = x;
             this.y = y;
             this.color = color;
-            area = new Point[height * 3];
+            area = new Point[height * (height * 2)];
 
         }
 
@@ -90,6 +98,8 @@ namespace Tetris
                     posX++;
                 }
                 posY++;
+
+                //Console.WriteLine($"X: {posX}, Y: {posY}");
             }
         }
 
@@ -152,7 +162,7 @@ namespace Tetris
                     if (xCoord == pt.X && yCoord == pt.Y)
                     {
                         didCollide = true;
-                        return true;
+                        break;
                     }
                 }
             return didCollide;

@@ -13,8 +13,9 @@ namespace Tetris
         private int y;
         private Board board;
         private Shape current;
-        private List<Block> state = new List<Block>();
+        private List<Block> state;
         private Random rando = new Random();
+        private int delay = 0;
 
 
 
@@ -25,6 +26,7 @@ namespace Tetris
             Point p = new Point(x, y);
             board = new Board(width, height, p);
             timer = new Timer(ms);
+            state = new List<Block>();
         }
 
         public void playGame()
@@ -32,7 +34,7 @@ namespace Tetris
             Console.Clear();
             Console.CursorVisible = false;
             board.drawBoard();
-            current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
+            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(6));
 
             current.Arrange();
 
@@ -64,22 +66,24 @@ namespace Tetris
         public void processInput(ConsoleKey action)
         {
 
+            List<Point> edges = board.getBorders();
+
             if (action == ConsoleKey.UpArrow)
             {
-                current.Mutate();
+                current.Mutate(edges, state);
             }
             else
             {
 
                 bool hitEdge = false;
                 bool hitBlock = false;
-                List<Point> edges = board.getBorders();
+
 
                 if (action == ConsoleKey.LeftArrow)
                 {
 
-                    hitEdge = checkBorders(edges, current, 1, 1);
-                    hitBlock = checkCollision(current, state, 1, 0);
+                    hitEdge = current.checkCollision(edges, 1, 0);
+                    hitBlock = current.checkCollision(state, 1, 0);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
@@ -87,8 +91,8 @@ namespace Tetris
                 if (action == ConsoleKey.RightArrow)
                 {
 
-                    hitEdge = checkBorders(edges, current, -1, 0);
-                    hitBlock = checkCollision(current, state, -1, 0);
+                    hitEdge = current.checkCollision(edges, -1, 0);
+                    hitBlock = current.checkCollision(state, -1, 0);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
@@ -96,55 +100,59 @@ namespace Tetris
                 if (action == ConsoleKey.DownArrow)
                 {
 
-                    hitEdge = checkBorders(edges, current, 0, -1);
-                    hitBlock = checkCollision(current, state, 0, -1);
+                    hitEdge = current.checkCollision(edges, 0, -1);
+                    hitBlock = current.checkCollision(state, 0, -1);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
+
                     else
                     {
-                        foreach(Block blk in current.getBlocks())
+                        if(delay == 1)
                         {
-                            state.Add(blk);
-
-                            int index = 51;
-                            foreach(Block bk in state)
+                            foreach (Block blk in current.getBlocks())
                             {
-                                Console.SetCursorPosition(71, index);
-                                Console.Write($"X: {bk.X}, Y: {bk.Y}");
-                                index++;
+                                state.Add(blk);
                             }
+
+                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(6));
+                            current.Arrange();
+                            current.render();
+
+                            delay = 0;
                         }
 
-                        current = new Shape(x + board.Width / 2 - 2, y + 5, rando.Next(6));
-                        current.Arrange();
-                        current.render();
+                        else
+                        {
+                            delay++;
+                        }
+
                     }
                 }
             }
         }
 
-        public bool checkBorders(List<Point> borders, Shape cur, int xOffset, int yOffset)
-        {
-            bool didCollide = false;
-            foreach (Point p in borders)
-            {
-                didCollide = cur.checkPoints(p, xOffset, yOffset);
-                if (didCollide) break;
-            }
-            return didCollide;
-        }
+        //public bool checkBorders(List<Point> borders, Shape cur, int xOffset, int yOffset)
+        //{
+        //    bool didCollide = false;
+        //    foreach (Point p in borders)
+        //    {
+        //        didCollide = cur.checkPoints(p, xOffset, yOffset);
+        //        if (didCollide) break;
+        //    }
+        //    return didCollide;
+        //}
 
-        public bool checkCollision(Shape cur, List<Block> obstacles, int xOffset, int yOffset)
-        {
-            bool collided = false;
+        //public bool checkCollision(Shape cur, List<Block> obstacles, int xOffset, int yOffset)
+        //{
+        //    bool collided = false;
 
-            foreach (Block ob in obstacles)
-            {
-                collided = current.checkBlocks(ob, xOffset, yOffset);
-                if (collided) break;
-            }
-            return collided;
+        //    foreach (Block ob in obstacles)
+        //    {
+        //        collided = current.checkBlocks(ob, xOffset, yOffset);
+        //        if (collided) break;
+        //    }
+        //    return collided;
 
-        }
+        //}
     } 
 }

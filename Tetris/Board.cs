@@ -9,6 +9,7 @@ namespace Tetris
         private int width;
         private Point start;
         private List<Point> borders = new List<Point>();
+        private Point spawnPoint;
 
         public int Height
         {
@@ -33,6 +34,14 @@ namespace Tetris
             }
         }
 
+        public Point SpawnPoint
+        {
+            get
+            {
+                return spawnPoint;
+            }
+        }
+
         public List<Point> getBorders()
         {
             return borders;
@@ -44,6 +53,7 @@ namespace Tetris
             width = x;
             height = y;
             start = pt;
+            spawnPoint = new Point(pt.X + width / 2, pt.Y);
 
         }
 
