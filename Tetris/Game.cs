@@ -9,6 +9,8 @@ namespace Tetris
     {
 
         private Timer timer;
+        private Timer lineTimer;
+        private int timerCounter;
         private int x;
         private int y;
         private Board board;
@@ -16,6 +18,9 @@ namespace Tetris
         private List<Block> state;
         private Random rando = new Random();
         private int delay = 0;
+        private int score;
+        List<Block> fallingDebris = new List<Block>();
+        // private List<Block> lines;
 
 
 
@@ -26,6 +31,7 @@ namespace Tetris
             Point p = new Point(x, y);
             board = new Board(width, height, p);
             timer = new Timer(ms);
+            lineTimer = new Timer(ms / 4);
             state = new List<Block>();
         }
 
@@ -114,7 +120,24 @@ namespace Tetris
                                 state.Add(blk);
                             }
 
-                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(6));
+                            Lines();
+
+                            //Console.Clear();
+
+                            board.drawBoard();
+
+                            foreach(Block b in state)
+                            {
+                                b.erase();
+                                b.inflate();
+                                b.draw();
+
+                            }
+
+
+                            //Console.WriteLine(toDelete.Count);
+
+                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, 5);
                             current.Arrange();
                             current.render();
 
@@ -126,32 +149,229 @@ namespace Tetris
                             delay++;
                         }
 
+                        //Console.WriteLine(lines);
+
                     }
                 }
             }
         }
 
-        //public bool checkBorders(List<Point> borders, Shape cur, int xOffset, int yOffset)
+        public void Lines()
+        {
+
+            int[] YLines = new int[board.Height + board.Start.Y];
+            List<Block> toDelete = new List<Block>();
+            List<int> Yindexes= new List<int>();
+            List<Block> fallingBlocks = new List<Block>();
+            int maxY = 0;
+            int minY = int.MaxValue;
+            int lines = 0;
+            bool lineCompleted = false;
+
+
+            foreach(Block blk in state)
+            {
+                foreach(Point pt in blk.getArea())
+                {
+                    
+                    int temp = YLines[pt.Y];
+                    temp++;
+                    YLines[pt.Y] = temp;
+                    if(temp >= board.Width - Program.margin + 1)
+                    {
+                        Yindexes.Add(pt.Y);
+                        if (pt.Y > maxY) maxY = pt.Y;
+                        if (pt.Y < minY) minY = pt.Y;
+                        lineCompleted = true;
+                    }
+                }
+            }
+
+            if (!lineCompleted) return;
+
+            for(int i = 0; i < YLines.Length; i++)
+            {
+                if(YLines[i] >= board.Width - Program.margin + 1)
+                {
+                    lines++;
+                }
+            }
+
+            foreach(Block bk in state)
+            {
+                bool wasFound = false;
+                foreach(Point p in bk.getArea())
+                {
+                    foreach(int lin in Yindexes)
+                    {
+                        if(lin == p.Y)
+                        {
+                            toDelete.Add(bk);
+                            wasFound = true;
+                            break;
+                        }
+
+                        if (p.Y < minY)
+                        {
+                            fallingBlocks.Add(bk);
+                            break;
+                        }
+                            
+                    }
+                }
+            }
+
+            this.score += toDelete.Count;
+            //deleteLines(toDelete);
+
+            fallingDebris = fallingBlocks;
+
+            foreach (Block b in toDelete)
+            {
+                state.Remove(b);
+
+                b.erase();
+            }
+
+            //Console.WriteLine(fallingBlocks.Count);
+            //Console.WriteLine(minY);
+            //Console.WriteLine(maxY);
+
+            //for(int i = 0; i < YLines.Length; i++)
+            //{
+            //    Console.WriteLine($"Index: {i}, Count: {YLines[i]}");
+            //}
+            //Console.WriteLine(YLines.Length);
+            Console.Clear();
+            Console.SetCursorPosition(45, 5);
+            for(int i = 0; i < YLines.Length; i++)
+            {
+                Console.WriteLine(i);
+                Console.WriteLine(YLines[i]);
+            }
+            Console.WriteLine(lines);
+            Console.WriteLine(minY);
+            Console.WriteLine(fallingDebris.Count);
+
+
+            debrisFall(fallingBlocks, lines);
+
+            //lineTimer.Elapsed += OnLineDeletion2;
+            //lineTimer.Enabled = true;
+
+            //debrisFall(fallingDebris);
+
+        }
+
+        //public void deleteLines(List<Block> deleteable)
         //{
-        //    bool didCollide = false;
-        //    foreach (Point p in borders)
+        //    timerCounter = 0;
+        //    lineTimer.Elapsed += OnLineDeletion;
+        //    lineTimer.Enabled = true;
+
+        //    while (timerCounter < 4)
         //    {
-        //        didCollide = cur.checkPoints(p, xOffset, yOffset);
-        //        if (didCollide) break;
+        //        Console.WriteLine(timerCounter);
+        //        if (timerCounter % 2 == 0)
+        //        {
+        //            foreach (Block b in deleteable)
+        //            {
+        //                b.Color = ConsoleColor.White;
+        //                b.inflate();
+
+        //            }
+
+        //        }
+
+        //        else
+        //        {
+        //            foreach (Block b in deleteable)
+        //            {
+        //                b.Color = ConsoleColor.Black;
+        //                b.inflate();
+
+        //            }
+        //        }
         //    }
-        //    return didCollide;
+
+        //    Console.WriteLine(timerCounter);
+        //    timerCounter = 0;
+        //    lineTimer.Stop();
+
         //}
 
-        //public bool checkCollision(Shape cur, List<Block> obstacles, int xOffset, int yOffset)
-        //{
-        //    bool collided = false;
+        public void debrisFall(List<Block> fallingDebris, int lines)
+        {
+            foreach(Block b in fallingDebris)
+            {
+                state.Remove(b);
+            }
 
-        //    foreach (Block ob in obstacles)
+            for(int i = 0; i < lines; i++)
+            {
+                foreach(Block bk in fallingDebris)
+                {
+                    bk.Y += Block.Height;
+                    bk.inflate();
+                }
+            }
+
+            foreach (Block b in fallingDebris)
+            {
+                state.Add(b);
+            }
+        }
+
+        //public void debrisFall(List<Block> fallingDebris, List<Point> edges)
+        //{
+
+        //    for(int i = (fallingDebris.Count - 1); i >=0; i--)
         //    {
-        //        collided = current.checkBlocks(ob, xOffset, yOffset);
-        //        if (collided) break;
+        //        bool hitBottom = false;
+        //        bool hitBlock = false;
+
+        //        Block b = fallingDebris[i];
+        //        state.Remove(b);
+        //        Block falling = new Block(b.X, b.Y,b.Color);
+        //        falling.Shift(ConsoleKey.DownArrow);
+
+        //        for (int j = 0; j < state.Count; j++)
+        //        {
+        //            hitBlock = state[j].checkBlock(falling, 0, + 1);
+        //            if (hitBlock)
+        //            {
+        //                fallingDebris.Remove(b);
+        //                state.Add(falling);
+        //                //state.Remove(b);
+        //                i--;
+
+        //            }
+        //        }
+        //        for(int k = 0; k < edges.Count; k++)
+        //        {
+        //            hitBottom = b.checkEveryPoint(edges[k].X, edges[k].Y + 1);
+        //            if(hitBottom)
+        //            {
+        //                fallingDebris.Remove(b);
+        //                state.Add(falling);
+        //                //state.Remove(b);
+        //                i--;
+
+        //            }
+        //        }
         //    }
-        //    return collided;
+
+        //    //timerCounter = 0;
+        //}
+
+
+        //public void OnLineDeletion(Object source, ElapsedEventArgs e)
+        //{
+        //    timerCounter++;   
+        //}
+
+        //public void OnLineDeletion2(Object source, ElapsedEventArgs e)
+        //{
 
         //}
     } 

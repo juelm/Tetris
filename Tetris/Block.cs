@@ -21,6 +21,10 @@ namespace Tetris
             {
                 return color;
             }
+            set
+            {
+                color = value;
+            }
         }
 
         public Point[] getArea()
