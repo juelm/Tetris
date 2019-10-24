@@ -199,10 +199,11 @@ namespace Tetris
 
             foreach(Block bk in state)
             {
-                bool wasFound = false;
+                //bool wasFound = false;
                 foreach(Point p in bk.getArea())
                 {
-                    foreach(int lin in Yindexes)
+                    bool wasFound = false;
+                    foreach (int lin in Yindexes)
                     {
                         if(lin == p.Y)
                         {
@@ -214,10 +215,12 @@ namespace Tetris
                         if (p.Y < minY)
                         {
                             fallingBlocks.Add(bk);
+                            wasFound = true;
                             break;
                         }
                             
                     }
+                    if (wasFound) break;
                 }
             }
 
@@ -251,7 +254,14 @@ namespace Tetris
             }
             Console.WriteLine(lines);
             Console.WriteLine(minY);
-            Console.WriteLine(fallingDebris.Count);
+
+            for (int i = 0; i < fallingBlocks.Count; i++)
+            {
+                Console.WriteLine(i);
+                Console.WriteLine("Y: " + fallingBlocks[i].Y);
+            }
+
+            //Console.WriteLine(fallingBlocks.Count);
 
 
             debrisFall(fallingBlocks, lines);
@@ -302,10 +312,10 @@ namespace Tetris
 
         public void debrisFall(List<Block> fallingDebris, int lines)
         {
-            foreach(Block b in fallingDebris)
-            {
-                state.Remove(b);
-            }
+            //foreach(Block b in fallingDebris)
+            //{
+            //    state.Remove(b);
+            //}
 
             for(int i = 0; i < lines; i++)
             {
@@ -316,10 +326,10 @@ namespace Tetris
                 }
             }
 
-            foreach (Block b in fallingDebris)
-            {
-                state.Add(b);
-            }
+            //foreach (Block b in fallingDebris)
+            //{
+            //    state.Add(b);
+            //}
         }
 
         //public void debrisFall(List<Block> fallingDebris, List<Point> edges)
