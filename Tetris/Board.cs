@@ -10,6 +10,7 @@ namespace Tetris
         private Point start;
         private List<Point> borders = new List<Point>();
         private Point spawnPoint;
+        private int scoreBoardOffsetX = 6;
 
         public int Height
         {
@@ -80,34 +81,65 @@ namespace Tetris
         public void drawBoard()
         {
             createBoard();
+            ConsoleColor col = ConsoleColor.DarkGray;
 
-            foreach(Point p in borders)
+            Console.BackgroundColor = col;
+
+            foreach (Point p in borders)
             {
                 Console.SetCursorPosition(p.X, p.Y);
-                Console.Write("#");
+                Console.Write(" ");
             }
+            Console.ResetColor();
+
+            drawScoreBoard(Start.Y, col, ConsoleColor.Magenta, "Lines:");
+            drawScoreBoard(Start.Y + 10, col, ConsoleColor.Cyan, "Score:");
+
         }
+     
+        public void drawScoreBoard(int yOffset, ConsoleColor color, ConsoleColor textColor, string title)
+        {
+            int height = 7;
+            int width = 14;
+            int centerText = width > title.Length ? (width - title.Length) / 2 : 0;
+            int cursorX = Start.X + Width + scoreBoardOffsetX;
+            int cursorY = yOffset;
 
-        //public void drawBoard()
-        //{
-        //    for (int i = 0; i <= height + 1; i++)
-        //    {
-        //        Console.Write('+');
 
-        //        for (int j = 1; j <= width + 1; j++)
-        //        {
-        //            if(i == 0 || i == height + 1)
-        //            {
-        //                Console.Write("-");
-        //            }
-        //            else
-        //            {
-        //                Console.Write(" ");
-        //            }
-        //        }
-        //        Console.Write('+');
-        //        Console.WriteLine();
-        //    }
-        //}
+            for(int i = 0; i < height; i++)
+            {
+                Console.SetCursorPosition(cursorX, cursorY + i);
+
+                for(int j = 0; j < width; j++)
+                {
+                    if(i < 2 || i == height - 1)
+                    {
+                        Console.BackgroundColor = color;
+                        Console.Write(" ");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        if(j == 0 || j == width - 1)
+                        {
+                            Console.BackgroundColor = color;
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                        }
+                    }
+                }
+                Console.WriteLine();
+            }
+
+            Console.SetCursorPosition(cursorX + centerText, cursorY + 1);
+            Console.ForegroundColor = textColor;
+            Console.BackgroundColor = color;
+            Console.Write(title);
+            Console.ResetColor();
+        }
     }
 }

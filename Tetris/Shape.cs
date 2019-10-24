@@ -74,7 +74,7 @@ namespace Tetris
                 int[] pos4 =
                     {
                         0, 0, 0, 0, 0,
-                        0, 1, 0, 0, 0,
+                        0, 0, 0, 1, 0,
                         0, 1, 1, 1, 0,
                         0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0
@@ -121,9 +121,9 @@ namespace Tetris
                 int[] pos4 =
                     {
                         0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 1, 1,
                         0, 0, 0, 0, 0,
+                        0, 1, 1, 1, 0,
+                        0, 0, 0, 1, 0,
                         0, 0, 0, 0, 0
                     };
 
@@ -168,9 +168,9 @@ namespace Tetris
                     {
                         0, 0, 0, 0, 0,
                         0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
+                        0, 1, 1, 0, 0,
                         0, 1, 0, 0, 0,
-                        0, 1, 0, 0, 0
+                        0, 0, 0, 0, 0
                     };
 
                 configurations.Add(1, pos1);
@@ -180,7 +180,7 @@ namespace Tetris
             }
             else if (rando == 3)
             {
-                this.color = ConsoleColor.DarkBlue;
+                this.color = ConsoleColor.Blue;
                 this.blocks = new Block[4];
                 this.prior = new Block[4];
                 int[] pos1 =
@@ -272,23 +272,23 @@ namespace Tetris
             }
             else if (rando == 5)
             {
-                this.color = ConsoleColor.DarkMagenta;
-                this.blocks = new Block[5];
-                this.prior = new Block[5];
+                this.color = ConsoleColor.Magenta;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
                 int[] pos1 =
                     {
                         0, 0, 1, 0, 0,
                         0, 0, 1, 0, 0,
                         0, 0, 1, 0, 0,
                         0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0
+                        0, 0, 0, 0, 0
                     };
 
                 int[] pos2 =
                     {
                         0, 0, 0, 0, 0,
+                        0, 1, 1, 1, 1,
                         0, 0, 0, 0, 0,
-                        1, 1, 1, 1, 1,
                         0, 0, 0, 0, 0,
                         0, 0, 0, 0, 0
                     };
@@ -299,15 +299,61 @@ namespace Tetris
                         0, 0, 1, 0, 0,
                         0, 0, 1, 0, 0,
                         0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0
+                        0, 0, 0, 0, 0
                     };
 
                 int[] pos4 =
                     {
                         0, 0, 0, 0, 0,
+                        0, 1, 1, 1, 1,
                         0, 0, 0, 0, 0,
-                        1, 1, 1, 1, 1,
                         0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                configurations.Add(1, pos1);
+                configurations.Add(2, pos2);
+                configurations.Add(3, pos3);
+                configurations.Add(4, pos4);
+            }
+            else if (rando == 6)
+            {
+                this.color = ConsoleColor.Gray;
+                this.blocks = new Block[4];
+                this.prior = new Block[4];
+                int[] pos1 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 1, 1, 1, 0,
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos2 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 1, 1, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos3 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0,
+                        0, 1, 1, 1, 0,
+                        0, 0, 1, 0, 0,
+                        0, 0, 0, 0, 0
+                    };
+
+                int[] pos4 =
+                    {
+                        0, 0, 0, 0, 0,
+                        0, 0, 1, 0, 0,
+                        0, 1, 1, 0, 0,
+                        0, 0, 1, 0, 0,
                         0, 0, 0, 0, 0
                     };
 
