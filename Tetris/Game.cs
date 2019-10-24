@@ -40,7 +40,7 @@ namespace Tetris
             Console.Clear();
             Console.CursorVisible = false;
             board.drawBoard();
-            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(6));
+            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
 
             current.Arrange();
 
@@ -65,7 +65,7 @@ namespace Tetris
 
         public void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            //processInput(ConsoleKey.DownArrow);
+            processInput(ConsoleKey.DownArrow);
 
         }
 
@@ -122,22 +122,19 @@ namespace Tetris
 
                             Lines();
 
-                            //Console.Clear();
+                            Console.Clear();
 
                             board.drawBoard();
 
                             foreach(Block b in state)
                             {
-                                b.erase();
+                                //b.erase();
                                 b.inflate();
                                 b.draw();
 
                             }
 
-
-                            //Console.WriteLine(toDelete.Count);
-
-                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, 5);
+                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
                             current.Arrange();
                             current.render();
 
@@ -148,8 +145,6 @@ namespace Tetris
                         {
                             delay++;
                         }
-
-                        //Console.WriteLine(lines);
 
                     }
                 }
@@ -225,7 +220,6 @@ namespace Tetris
             }
 
             this.score += toDelete.Count;
-            //deleteLines(toDelete);
 
             fallingDebris = fallingBlocks;
 
@@ -236,86 +230,14 @@ namespace Tetris
                 b.erase();
             }
 
-            //Console.WriteLine(fallingBlocks.Count);
-            //Console.WriteLine(minY);
-            //Console.WriteLine(maxY);
-
-            //for(int i = 0; i < YLines.Length; i++)
-            //{
-            //    Console.WriteLine($"Index: {i}, Count: {YLines[i]}");
-            //}
-            //Console.WriteLine(YLines.Length);
-            Console.Clear();
-            Console.SetCursorPosition(45, 5);
-            for(int i = 0; i < YLines.Length; i++)
-            {
-                Console.WriteLine(i);
-                Console.WriteLine(YLines[i]);
-            }
-            Console.WriteLine(lines);
-            Console.WriteLine(minY);
-
-            for (int i = 0; i < fallingBlocks.Count; i++)
-            {
-                Console.WriteLine(i);
-                Console.WriteLine("Y: " + fallingBlocks[i].Y);
-            }
-
-            //Console.WriteLine(fallingBlocks.Count);
-
 
             debrisFall(fallingBlocks, lines);
 
-            //lineTimer.Elapsed += OnLineDeletion2;
-            //lineTimer.Enabled = true;
-
-            //debrisFall(fallingDebris);
-
         }
 
-        //public void deleteLines(List<Block> deleteable)
-        //{
-        //    timerCounter = 0;
-        //    lineTimer.Elapsed += OnLineDeletion;
-        //    lineTimer.Enabled = true;
-
-        //    while (timerCounter < 4)
-        //    {
-        //        Console.WriteLine(timerCounter);
-        //        if (timerCounter % 2 == 0)
-        //        {
-        //            foreach (Block b in deleteable)
-        //            {
-        //                b.Color = ConsoleColor.White;
-        //                b.inflate();
-
-        //            }
-
-        //        }
-
-        //        else
-        //        {
-        //            foreach (Block b in deleteable)
-        //            {
-        //                b.Color = ConsoleColor.Black;
-        //                b.inflate();
-
-        //            }
-        //        }
-        //    }
-
-        //    Console.WriteLine(timerCounter);
-        //    timerCounter = 0;
-        //    lineTimer.Stop();
-
-        //}
 
         public void debrisFall(List<Block> fallingDebris, int lines)
         {
-            //foreach(Block b in fallingDebris)
-            //{
-            //    state.Remove(b);
-            //}
 
             for(int i = 0; i < lines; i++)
             {
@@ -326,54 +248,7 @@ namespace Tetris
                 }
             }
 
-            //foreach (Block b in fallingDebris)
-            //{
-            //    state.Add(b);
-            //}
         }
-
-        //public void debrisFall(List<Block> fallingDebris, List<Point> edges)
-        //{
-
-        //    for(int i = (fallingDebris.Count - 1); i >=0; i--)
-        //    {
-        //        bool hitBottom = false;
-        //        bool hitBlock = false;
-
-        //        Block b = fallingDebris[i];
-        //        state.Remove(b);
-        //        Block falling = new Block(b.X, b.Y,b.Color);
-        //        falling.Shift(ConsoleKey.DownArrow);
-
-        //        for (int j = 0; j < state.Count; j++)
-        //        {
-        //            hitBlock = state[j].checkBlock(falling, 0, + 1);
-        //            if (hitBlock)
-        //            {
-        //                fallingDebris.Remove(b);
-        //                state.Add(falling);
-        //                //state.Remove(b);
-        //                i--;
-
-        //            }
-        //        }
-        //        for(int k = 0; k < edges.Count; k++)
-        //        {
-        //            hitBottom = b.checkEveryPoint(edges[k].X, edges[k].Y + 1);
-        //            if(hitBottom)
-        //            {
-        //                fallingDebris.Remove(b);
-        //                state.Add(falling);
-        //                //state.Remove(b);
-        //                i--;
-
-        //            }
-        //        }
-        //    }
-
-        //    //timerCounter = 0;
-        //}
-
 
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)
         //{
