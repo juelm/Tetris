@@ -18,8 +18,10 @@ namespace Tetris
         private List<Block> state;
         private Random rando = new Random();
         private int delay = 0;
-        private int score;
-        List<Block> fallingDebris = new List<Block>();
+        private int score = 0;
+        private int lines = 0;
+        private int level = 1;
+        //List<Block> fallingDebris = new List<Block>();
         // private List<Block> lines;
 
 
@@ -29,7 +31,7 @@ namespace Tetris
             this.x = x;
             this.y = y;
             Point p = new Point(x, y);
-            board = new Board(width, height, p);
+            board = new Board(width, height, p, ConsoleColor.DarkGray);
             timer = new Timer(ms);
             lineTimer = new Timer(ms / 4);
             state = new List<Block>();
@@ -45,6 +47,8 @@ namespace Tetris
             current.Arrange();
 
             current.render();
+
+            setStats();
 
             current.Move(ConsoleKey.DownArrow);
 
@@ -126,7 +130,9 @@ namespace Tetris
 
                             board.drawBoard();
 
-                            foreach(Block b in state)
+                            setStats();
+
+                            foreach (Block b in state)
                             {
                                 //b.erase();
                                 b.inflate();
@@ -154,7 +160,7 @@ namespace Tetris
         public void Lines()
         {
 
-            int[] YLines = new int[board.Height + board.Start.Y];
+            int[] YLines = new int[1000];
             List<Block> toDelete = new List<Block>();
             List<int> Yindexes= new List<int>();
             List<Block> fallingBlocks = new List<Block>();
@@ -219,9 +225,11 @@ namespace Tetris
                 }
             }
 
-            this.score += toDelete.Count;
+            this.lines += lines;
+            this.score += (int)Math.Pow(2,lines);
 
-            fallingDebris = fallingBlocks;
+
+            //fallingDebris = fallingBlocks;
 
             foreach (Block b in toDelete)
             {
@@ -248,6 +256,20 @@ namespace Tetris
                 }
             }
 
+        }
+
+        public void setStats()
+        {
+            Console.SetCursorPosition(board.getScore().GetCursorPosition().X, board.getScore().GetCursorPosition().Y);
+            Console.ForegroundColor = board.getScore().GetTextColor();
+            Console.Write(this.score);
+            Console.SetCursorPosition(board.getLines().GetCursorPosition().X, board.getLines().GetCursorPosition().Y);
+            Console.ForegroundColor = board.getLines().GetTextColor();
+            Console.Write(this.lines);
+            Console.SetCursorPosition(board.getLevel().GetCursorPosition().X, board.getLevel().GetCursorPosition().Y);
+            Console.ForegroundColor = board.getLevel().GetTextColor();
+            Console.Write(this.level);
+            Console.ResetColor();
         }
 
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)

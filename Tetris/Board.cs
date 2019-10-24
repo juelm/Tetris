@@ -11,6 +11,11 @@ namespace Tetris
         private List<Point> borders = new List<Point>();
         private Point spawnPoint;
         private int scoreBoardOffsetX = 6;
+        private ConsoleColor color;
+        private Scoreboard score;
+        private Scoreboard lines;
+        private Scoreboard level;
+
 
         public int Height
         {
@@ -48,12 +53,28 @@ namespace Tetris
             return borders;
         }
 
-        public Board(int x, int y, Point pt)
+        public Scoreboard getScore()
+        {
+            return score;
+        }
+
+        public Scoreboard getLines()
+        {
+            return lines;
+        }
+
+        public Scoreboard getLevel()
+        {
+            return level;
+        }
+
+        public Board(int x, int y, Point pt, ConsoleColor color)
         {
 
             width = x;
             height = y;
             start = pt;
+            this.color = color;
             spawnPoint = new Point(pt.X + width / 2, pt.Y);
 
         }
@@ -70,12 +91,16 @@ namespace Tetris
                         borders.Add(new Point(j, i));
 
                     }
-                    else if(j == start.X || j == start.X + width)
+                    else if (j == start.X || j == start.X + width)
                     {
                         borders.Add(new Point(j, i));
                     }
                 }
             }
+
+            score = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y, color, ConsoleColor.Magenta, "Score:");
+            lines = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 10, color, ConsoleColor.Cyan, "Lines:");
+            level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 20, color, ConsoleColor.Yellow, "Level:");
         }
 
         public void drawBoard()
@@ -83,7 +108,7 @@ namespace Tetris
             createBoard();
             ConsoleColor col = ConsoleColor.DarkGray;
 
-            Console.BackgroundColor = col;
+            Console.BackgroundColor = color;
 
             foreach (Point p in borders)
             {
@@ -92,37 +117,109 @@ namespace Tetris
             }
             Console.ResetColor();
 
-            drawScoreBoard(Start.Y, col, ConsoleColor.Magenta, "Lines:");
-            drawScoreBoard(Start.Y + 10, col, ConsoleColor.Cyan, "Score:");
+            score.drawScoreboard();
+            lines.drawScoreboard();
+            level.drawScoreboard();
 
         }
-     
-        public void drawScoreBoard(int yOffset, ConsoleColor color, ConsoleColor textColor, string title)
+
+        //public void drawScoreBoard(int yOffset, ConsoleColor color, ConsoleColor textColor, string title)
+        //{
+        //    int height = 7;
+        //    int width = 14;
+        //    int centerText = width > title.Length ? (width - title.Length) / 2 : 0;
+        //    int cursorX = Start.X + Width + scoreBoardOffsetX;
+        //    int cursorY = yOffset;
+
+
+        //    for (int i = 0; i < height; i++)
+        //    {
+        //        Console.SetCursorPosition(cursorX, cursorY + i);
+
+        //        for (int j = 0; j < width; j++)
+        //        {
+        //            if (i < 2 || i == height - 1)
+        //            {
+        //                Console.BackgroundColor = color;
+        //                Console.Write(" ");
+        //                Console.ResetColor();
+        //            }
+        //            else
+        //            {
+        //                if (j == 0 || j == width - 1)
+        //                {
+        //                    Console.BackgroundColor = color;
+        //                    Console.Write(" ");
+        //                    Console.ResetColor();
+        //                }
+        //                else
+        //                {
+        //                    Console.Write(" ");
+        //                }
+        //            }
+        //        }
+        //        Console.WriteLine();
+        //    }
+
+        //    Console.SetCursorPosition(cursorX + centerText, cursorY + 1);
+        //    Console.ForegroundColor = textColor;
+        //    Console.BackgroundColor = color;
+        //    Console.Write(title);
+        //    Console.ResetColor();
+        //}
+    }
+
+    public class Scoreboard
+    {
+        string title;
+        int height;
+        int width;
+        int cursorX;
+        int cursorY;
+        ConsoleColor borderColor;
+        ConsoleColor textColor;
+        Point statCursor;
+
+        public Point GetCursorPosition()
         {
-            int height = 7;
-            int width = 14;
-            int centerText = width > title.Length ? (width - title.Length) / 2 : 0;
-            int cursorX = Start.X + Width + scoreBoardOffsetX;
-            int cursorY = yOffset;
+            return statCursor;
+        }
 
+        public ConsoleColor GetTextColor()
+        {
+            return textColor;
+        }
 
-            for(int i = 0; i < height; i++)
+        public Scoreboard(int height, int width, int cursorX, int cursorY, ConsoleColor borderColor, ConsoleColor textColor, string text)
+        {
+            this.height = height;
+            this.width = width;
+            this.cursorX = cursorX;
+            this.cursorY = cursorY;
+            this.borderColor = borderColor;
+            this.textColor = textColor;
+            this.title = text;
+        }
+
+        public void drawScoreboard()
+        {
+            for (int i = 0; i < height; i++)
             {
                 Console.SetCursorPosition(cursorX, cursorY + i);
 
-                for(int j = 0; j < width; j++)
+                for (int j = 0; j < width; j++)
                 {
-                    if(i < 2 || i == height - 1)
+                    if (i < 2 || i == height - 1)
                     {
-                        Console.BackgroundColor = color;
+                        Console.BackgroundColor = borderColor;
                         Console.Write(" ");
                         Console.ResetColor();
                     }
                     else
                     {
-                        if(j == 0 || j == width - 1)
+                        if (j == 0 || j == width - 1)
                         {
-                            Console.BackgroundColor = color;
+                            Console.BackgroundColor = borderColor;
                             Console.Write(" ");
                             Console.ResetColor();
                         }
@@ -135,11 +232,17 @@ namespace Tetris
                 Console.WriteLine();
             }
 
+            int centerText = width > title.Length ? (width - title.Length) / 2 : 0;
             Console.SetCursorPosition(cursorX + centerText, cursorY + 1);
             Console.ForegroundColor = textColor;
-            Console.BackgroundColor = color;
+            Console.BackgroundColor = borderColor;
             Console.Write(title);
             Console.ResetColor();
+            statCursor = new Point(cursorX + 3, cursorY + height / 2 + 1);
+            //Console.SetCursorPosition(statCursor.X, statCursor.Y);
+            //Console.ForegroundColor = textColor;
+            //Console.Write(0);
+            //Console.ResetColor();
         }
     }
 }
