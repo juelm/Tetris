@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace Tetris
 {
+
+    public enum states { Free, Current, Base };
     public class Game
     {
 
@@ -22,6 +24,8 @@ namespace Tetris
         private int lines = 0;
         private int level = 1;
         private int ms;
+        private List<Point> edges = new List<Point>();
+        private object threadLock = new object();
         //List<Block> fallingDebris = new List<Block>();
         // private List<Block> lines;
 
@@ -45,6 +49,11 @@ namespace Tetris
             Console.CursorVisible = false;
             board.drawBoard();
             current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
+
+            foreach(Point p in board.getBorders())
+            {
+                edges.Add(p);
+            }
 
             current.Arrange();
 
@@ -95,7 +104,6 @@ namespace Tetris
         public bool processInput(ConsoleKey action)
         {
             bool alive = true;
-            List<Point> edges = board.getBorders();
 
             if (action == ConsoleKey.UpArrow)
             {
@@ -126,53 +134,58 @@ namespace Tetris
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
-                if (action == ConsoleKey.DownArrow)
+                lock (threadLock)
                 {
-
-                    hitEdge = current.checkCollision(edges, 0, -1);
-                    hitBlock = current.checkCollision(state, 0, -1);
-
-                    if (!hitEdge && !hitBlock) current.Move(action);
-
-                    else
+                    if (action == ConsoleKey.DownArrow)
                     {
-                        if(delay == 1)
-                        {
-                            foreach (Block blk in current.getBlocks())
-                            {
-                                state.Add(blk);
-                            }
 
-                            Lines();
+                        hitEdge = current.checkCollision(edges, 0, -1);
+                        hitBlock = current.checkCollision(state, 0, -1);
 
-                            Console.Clear();
-
-                            foreach (Block b in state)
-                            {
-                                //b.erase();
-                                b.inflate();
-                                b.draw();
-
-                            }
-
-                            board.drawBoard();
-
-                            setStats();
-
-                            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
-                            current.Arrange();
-                            current.render();
-
-                            alive = !current.checkCollision(state, 0, -1);
-
-                            delay = 0;
-                        }
+                        if (!hitEdge && !hitBlock) current.Move(action);
 
                         else
                         {
-                            delay++;
-                        }
+                            if (delay == 1)
+                            {
+                                foreach (Block blk in current.getBlocks())
+                                {
+                                    state.Add(blk);
+                                }
 
+                                Lines();
+
+                                Console.Clear();
+
+                                foreach (Block b in state)
+                                {
+                                    b.inflate();
+                                    b.draw();
+
+                                }
+
+                                board.drawBoard();
+
+                                setStats();
+
+                                current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
+                                current.Arrange();
+                                current.render();
+
+                                alive = !current.checkCollision(state, 0, -1);
+
+                                Console.SetCursorPosition(10, 0);
+                                Console.Write(state.Count);
+
+                                delay = 0;
+                            }
+
+                            else
+                            {
+                                delay++;
+                            }
+
+                        }
                     }
                 }
             }
@@ -295,7 +308,7 @@ namespace Tetris
 
         public ConsoleKey gameOver()
         {
-            int length = 40;
+            int length = 39;
             int height = 10;
             int centerX = board.Start.X + (board.Width - length) / 2;
             int centerY = board.Start.Y + (board.Height - height) / 2;
