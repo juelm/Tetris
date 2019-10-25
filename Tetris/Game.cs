@@ -21,6 +21,7 @@ namespace Tetris
         private int score = 0;
         private int lines = 0;
         private int level = 1;
+        private int ms;
         //List<Block> fallingDebris = new List<Block>();
         // private List<Block> lines;
 
@@ -30,6 +31,7 @@ namespace Tetris
         {
             this.x = x;
             this.y = y;
+            this.ms = ms;
             Point p = new Point(x, y);
             board = new Board(width, height, p, ConsoleColor.DarkGray);
             timer = new Timer(ms);
@@ -37,7 +39,7 @@ namespace Tetris
             state = new List<Block>();
         }
 
-        public void playGame()
+        public bool playGame()
         {
             Console.Clear();
             Console.CursorVisible = false;
@@ -56,13 +58,25 @@ namespace Tetris
             timer.Enabled = true;
 
             ConsoleKey userInput = ConsoleKey.UpArrow;
+            bool notDead = true;
 
-            while (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow)
+            while (notDead && (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow))
             {
                 userInput = Console.ReadKey().Key;
 
-                processInput(userInput);
+                notDead = processInput(userInput);
 
+            }
+
+            ConsoleKey playAgain = gameOver();
+
+            if (playAgain == ConsoleKey.Q)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -73,9 +87,14 @@ namespace Tetris
 
         }
 
-        public void processInput(ConsoleKey action)
+        public void UponMyDeath(Object source, ElapsedEventArgs e)
         {
+            timerCounter++;
+        }
 
+        public bool processInput(ConsoleKey action)
+        {
+            bool alive = true;
             List<Point> edges = board.getBorders();
 
             if (action == ConsoleKey.UpArrow)
@@ -128,10 +147,6 @@ namespace Tetris
 
                             Console.Clear();
 
-                            board.drawBoard();
-
-                            setStats();
-
                             foreach (Block b in state)
                             {
                                 //b.erase();
@@ -140,9 +155,15 @@ namespace Tetris
 
                             }
 
+                            board.drawBoard();
+
+                            setStats();
+
                             current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
                             current.Arrange();
                             current.render();
+
+                            alive = !current.checkCollision(state, 0, -1);
 
                             delay = 0;
                         }
@@ -155,6 +176,8 @@ namespace Tetris
                     }
                 }
             }
+
+            return alive;
         }
 
         public void Lines()
@@ -229,8 +252,6 @@ namespace Tetris
             this.score += (int)Math.Pow(2,lines);
 
 
-            //fallingDebris = fallingBlocks;
-
             foreach (Block b in toDelete)
             {
                 state.Remove(b);
@@ -272,14 +293,75 @@ namespace Tetris
             Console.ResetColor();
         }
 
+        public ConsoleKey gameOver()
+        {
+            int length = 40;
+            int height = 10;
+            int centerX = board.Start.X + (board.Width - length) / 2;
+            int centerY = board.Start.Y + (board.Height - height) / 2;
+            string message = "****GAME OVER****";
+            string line2 = "q to quit enter to play again";
+            int messX = length > message.Length ? (length - message.Length) / 2 : 0;
+            int messY = height / 2;
+            int line2X = length > line2.Length ? (length - line2.Length) / 2 : 0;
+
+            timerCounter = 0;
+            timer.Interval = ms / 4;
+            timer.Elapsed -= OnTimedEvent;
+            timer.Elapsed += new ElapsedEventHandler(UponMyDeath);
+
+            
+            while (timerCounter < board.Height)
+            { 
+                int YCursor = board.Start.X + timerCounter;
+                for (int j = 0; j < board.Width; j++)
+                {
+                    int XCursor = board.Start.X + j;
+                    Console.SetCursorPosition(XCursor, YCursor);
+                    Console.BackgroundColor = ConsoleColor.DarkGray;
+                    Console.Write(" ");
+                }
+            }
+
+            timer.Stop();
+            timer.Elapsed -= UponMyDeath;
+            timerCounter = 0;
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            for (int i = 0; i < height; i++)
+            {
+                int YCursor = centerY + i;
+                for(int j = 0; j < length; j++)
+                {
+                    int XCursor = centerX + j;
+                    Console.SetCursorPosition(XCursor, YCursor);
+                    Console.Write(" ");
+                }
+            }
+
+            Console.ResetColor();
+
+            Console.SetCursorPosition(centerX + messX, centerY + messY);
+            Console.WriteLine(message);
+            Console.SetCursorPosition(centerX + line2X, centerY + messY + 1);
+            Console.WriteLine(line2);
+
+            ConsoleKeyInfo playAgain;
+
+            do
+            {
+                playAgain = Console.ReadKey();
+
+            } while (playAgain.Key == ConsoleKey.DownArrow);
+
+
+            return playAgain.Key;
+        }
+
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)
         //{
-        //    timerCounter++;   
+        //    timerCounter++;
         //}
 
-        //public void OnLineDeletion2(Object source, ElapsedEventArgs e)
-        //{
-
-        //}
     } 
 }
