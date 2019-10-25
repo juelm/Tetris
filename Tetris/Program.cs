@@ -12,17 +12,21 @@ namespace Tetris
         //public static int blockHeight = 1;
         //public static int blockWidth = blockHeight * 2;
         public static int margin = 3;
-        public static int boardHeight = Block.Height * 30;
+        public static int boardHeight = Block.Height * 25;
         public static int boardWidth = Block.Width * 20 + margin;
         public static int ms = 500;
 
         static void Main(string[] args)
         {
-            Game game = new Game(startX, startY, boardHeight, boardWidth, ms);
-            game.playGame();
+
+            bool play = true;
+
+            while (play)
+            {
+                Game game = new Game(startX, startY, boardHeight, boardWidth, ms);
+                play = game.playGame();
+            }
         }
 
     }
-
-
 }

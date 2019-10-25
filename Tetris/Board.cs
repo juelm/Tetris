@@ -123,50 +123,6 @@ namespace Tetris
 
         }
 
-        //public void drawScoreBoard(int yOffset, ConsoleColor color, ConsoleColor textColor, string title)
-        //{
-        //    int height = 7;
-        //    int width = 14;
-        //    int centerText = width > title.Length ? (width - title.Length) / 2 : 0;
-        //    int cursorX = Start.X + Width + scoreBoardOffsetX;
-        //    int cursorY = yOffset;
-
-
-        //    for (int i = 0; i < height; i++)
-        //    {
-        //        Console.SetCursorPosition(cursorX, cursorY + i);
-
-        //        for (int j = 0; j < width; j++)
-        //        {
-        //            if (i < 2 || i == height - 1)
-        //            {
-        //                Console.BackgroundColor = color;
-        //                Console.Write(" ");
-        //                Console.ResetColor();
-        //            }
-        //            else
-        //            {
-        //                if (j == 0 || j == width - 1)
-        //                {
-        //                    Console.BackgroundColor = color;
-        //                    Console.Write(" ");
-        //                    Console.ResetColor();
-        //                }
-        //                else
-        //                {
-        //                    Console.Write(" ");
-        //                }
-        //            }
-        //        }
-        //        Console.WriteLine();
-        //    }
-
-        //    Console.SetCursorPosition(cursorX + centerText, cursorY + 1);
-        //    Console.ForegroundColor = textColor;
-        //    Console.BackgroundColor = color;
-        //    Console.Write(title);
-        //    Console.ResetColor();
-        //}
     }
 
     public class Scoreboard
@@ -239,10 +195,6 @@ namespace Tetris
             Console.Write(title);
             Console.ResetColor();
             statCursor = new Point(cursorX + 3, cursorY + height / 2 + 1);
-            //Console.SetCursorPosition(statCursor.X, statCursor.Y);
-            //Console.ForegroundColor = textColor;
-            //Console.Write(0);
-            //Console.ResetColor();
         }
     }
 }
