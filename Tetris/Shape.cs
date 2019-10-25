@@ -412,30 +412,6 @@ namespace Tetris
 
         }
 
-        //public void Move(ConsoleKey pressed)
-        //{
-        //    switch (pressed)
-        //    {
-        //        case ConsoleKey.LeftArrow:
-        //            x -= 1;
-        //            break;
-        //        case ConsoleKey.RightArrow:
-        //            x += 1;
-        //            break;
-        //        case ConsoleKey.DownArrow:
-        //            y += 1;
-        //            break;
-        //    }
-
-        //    Arrange();
-
-
-
-        //    delete();
-
-        //    render();
-
-        //}
 
         public void Arrange()
         {
