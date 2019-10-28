@@ -11,8 +11,8 @@ namespace Tetris
         protected Block[] arrangement;
         protected int x;
         protected int y;
-        protected Block[] blocks;
-        protected Block[] prior;
+        protected Block[] blocks = new Block[4];
+        protected Block[] prior = new Block[4];
         protected ConsoleColor color;
         protected Dictionary<int, int[]> configurations= new Dictionary<int, int[]>();
         protected int configuration = 1;
@@ -42,325 +42,39 @@ namespace Tetris
             if(rando == 0)
             {
                 this.color = ConsoleColor.Green;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[]pos1 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 1, 0,
-                        0, 1, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 1, 0,
-                        0, 1, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
+                configurations = ShapeDictionary.zero;
 
             }
             else if(rando == 1)
             {
                 this.color = ConsoleColor.Yellow;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[] pos1 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
+                configurations = ShapeDictionary.one;
 
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 1, 0, 0, 0,
-                        0, 1, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 1, 0,
-                        0, 0, 0, 1, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
             }
             else if (rando == 2)
             {
                 this.color = ConsoleColor.Red;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[] pos1 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 1, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 1, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
+                configurations = ShapeDictionary.two;
             }
             else if (rando == 3)
             {
                 this.color = ConsoleColor.Blue;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[] pos1 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 1, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 1, 0, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
+                configurations = ShapeDictionary.three;
             }
             else if (rando == 4)
             {
                 this.color = ConsoleColor.Cyan;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[] pos1 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
+                configurations = ShapeDictionary.four;
             }
             else if (rando == 5)
             {
                 this.color = ConsoleColor.Magenta;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[] pos1 =
-                    {
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 1, 1,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 1, 1,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
+                configurations = ShapeDictionary.five;
             }
             else if (rando == 6)
             {
                 this.color = ConsoleColor.Gray;
-                this.blocks = new Block[4];
-                this.prior = new Block[4];
-                int[] pos1 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 1, 1, 1, 0,
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos2 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 1, 1, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos3 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 0, 0, 0,
-                        0, 1, 1, 1, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                int[] pos4 =
-                    {
-                        0, 0, 0, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 1, 1, 0, 0,
-                        0, 0, 1, 0, 0,
-                        0, 0, 0, 0, 0
-                    };
-
-                configurations.Add(1, pos1);
-                configurations.Add(2, pos2);
-                configurations.Add(3, pos3);
-                configurations.Add(4, pos4);
+                configurations = ShapeDictionary.six;
             }
         }
 
