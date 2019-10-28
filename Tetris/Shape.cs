@@ -85,8 +85,6 @@ namespace Tetris
 
         public void render()
         {
-            //Console.SetCursorPosition(1, 1);
-            //Console.Write($"X: {x}, Y: {y} ");
             foreach (Block bk in blocks)
             {
                 bk.draw();
@@ -95,8 +93,6 @@ namespace Tetris
 
         public void delete()
         {
-            //Console.SetCursorPosition(1, 2);
-            //Console.Write(prior.Length);
             foreach (Block bk in prior)
             {
                 bk.erase();

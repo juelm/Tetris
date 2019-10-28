@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 namespace Tetris
 {
-    public static class ShapeDictionary
+    internal static class ShapeDictionary
     {
-        public static Dictionary<int, int[]> zero = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> zero = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {0, 0, 0, 0, 0,
@@ -42,7 +42,7 @@ namespace Tetris
             },
         };
 
-        public static Dictionary<int, int[]> one = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> one = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {
@@ -82,7 +82,7 @@ namespace Tetris
             }
         };
 
-        public static Dictionary<int, int[]> two = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> two = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {
@@ -122,7 +122,7 @@ namespace Tetris
             }
         };
 
-        public static Dictionary<int, int[]> three = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> three = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {
@@ -162,7 +162,7 @@ namespace Tetris
             }
         };
 
-        public static Dictionary<int, int[]> four = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> four = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {
@@ -203,7 +203,7 @@ namespace Tetris
         };
 
 
-        public static Dictionary<int, int[]> five = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> five = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {
@@ -243,7 +243,7 @@ namespace Tetris
             }
         };
 
-        public static Dictionary<int, int[]> six = new Dictionary<int, int[]>()
+        internal static Dictionary<int, int[]> six = new Dictionary<int, int[]>()
         {
             {
                 1, new int[25] {
