@@ -103,12 +103,11 @@ namespace Tetris
             level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 20, color, ConsoleColor.Yellow, "Level:");
         }
 
-        public void drawBoard()
+        public void drawBoard(ConsoleColor col = ConsoleColor.DarkGray)
         {
             createBoard();
-            ConsoleColor col = ConsoleColor.DarkGray;
 
-            Console.BackgroundColor = color;
+            Console.BackgroundColor = col;
 
             foreach (Point p in borders)
             {
