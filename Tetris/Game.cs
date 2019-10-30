@@ -23,6 +23,7 @@ namespace Tetris
         private int score = 0;
         private int lines = 0;
         private int level = 1;
+        private int nextLevel = 0;
         private int ms;
         private List<Point> edges = new List<Point>();
         private object threadLock = new object();
@@ -164,6 +165,13 @@ namespace Tetris
 
                                 }
 
+                                if(nextLevel == 5)
+                                {
+                                    timer.Interval = ms / 3;
+                                    nextLevel = 0;
+                                    level++;
+                                }
+
                                 board.drawBoard();
 
                                 setStats();
@@ -262,6 +270,7 @@ namespace Tetris
             }
 
             this.lines += lines;
+            this.nextLevel += lines;
             this.score += (int)Math.Pow(2,lines);
 
 
