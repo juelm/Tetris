@@ -1,20 +1,15 @@
-﻿<Properties StartupConfiguration="{5E3DD3A3-B881-47BD-BD64-84AD0A96CAFC}|Default">
+﻿<Properties StartupConfiguration="{8D9FE5B7-2459-4A3F-AB6D-0B1BCA957C0E}|Default">
   <MonoDevelop.Ide.ItemProperties.Tetris PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/ShapeDictionary.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Game.cs">
     <Files>
-      <File FileName="../HackerRank/HackerRank/ClimbingTheLeaderBoard/Solution.cs" Line="1" Column="1" />
-      <File FileName="Tetris/Game.cs" />
-      <File FileName="Tetris/Program.cs" />
-      <File FileName="Tetris/Board.cs" />
-      <File FileName="Tetris/Shape.cs" />
-      <File FileName="Tetris/ShapeDictionary.cs" Line="1" Column="1" />
+      <File FileName="Game.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Tetris" expanded="True">
             <Node name="Tetris" expanded="True">
-              <Node name="ShapeDictionary.cs" selected="True" />
+              <Node name="Game.cs" selected="True" />
             </Node>
           </Node>
         </State>
