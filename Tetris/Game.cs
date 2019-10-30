@@ -167,10 +167,12 @@ namespace Tetris
 
                                 if(nextLevel == 5)
                                 {
-                                    timer.Interval = ms / 3;
+                                    timer.Interval = ms / 1.5;
                                     nextLevel = 0;
                                     level++;
+                                    levelUp();
                                 }
+                                
 
                                 board.drawBoard();
 
@@ -181,9 +183,6 @@ namespace Tetris
                                 current.render();
 
                                 alive = !current.checkCollision(state, 0, -1);
-
-                                Console.SetCursorPosition(10, 0);
-                                Console.Write(state.Count);
 
                                 delay = 0;
                             }
@@ -378,6 +377,30 @@ namespace Tetris
 
 
             return playAgain.Key;
+        }
+
+        public void levelUp()
+        {
+            ElapsedEventHandler OnLevelUp = UponMyDeath;
+            lineTimer.Elapsed += OnLevelUp;
+            lineTimer.Enabled = true;
+            while (timerCounter < 8)
+            {
+                if (timerCounter % 2 == 0)
+                {
+                    board.drawBoard(ConsoleColor.White);
+                }
+                else
+                {
+                    board.drawBoard();
+                }
+
+            }
+
+            lineTimer.Stop();
+            lineTimer.Elapsed -= OnLevelUp;
+            timerCounter = 0;
+
         }
 
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)
