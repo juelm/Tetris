@@ -177,10 +177,11 @@ namespace Tetris
 
                                 if (nextLevel == 5)
                                 {
-                                    timer.Interval = ms / 1.5;
                                     nextLevel = 0;
                                     level++;
                                     levelUp();
+                                    board.drawBoard();
+                                    setStats();
                                 }
 
                                 alive = !current.checkCollision(state, 0, -1);
@@ -403,6 +404,7 @@ namespace Tetris
             lineTimer.Elapsed -= OnLevelUp;
             timerCounter = 0;
             timer.Elapsed += OnTimedEvent;
+            timer.Interval = ms / 1.5;
         }
 
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)
