@@ -2,6 +2,7 @@
 using System.Timers;
 using System.Drawing;
 using System.Collections.Generic;
+//using System.Threading;
 
 namespace Tetris
 {
@@ -164,14 +165,6 @@ namespace Tetris
                                     b.draw();
 
                                 }
-
-                                if(nextLevel == 5)
-                                {
-                                    timer.Interval = ms / 1.5;
-                                    nextLevel = 0;
-                                    level++;
-                                    levelUp();
-                                }
                                 
 
                                 board.drawBoard();
@@ -181,6 +174,14 @@ namespace Tetris
                                 current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
                                 current.Arrange();
                                 current.render();
+
+                                if (nextLevel == 5)
+                                {
+                                    timer.Interval = ms / 1.5;
+                                    nextLevel = 0;
+                                    level++;
+                                    levelUp();
+                                }
 
                                 alive = !current.checkCollision(state, 0, -1);
 
@@ -381,6 +382,7 @@ namespace Tetris
 
         public void levelUp()
         {
+            timer.Elapsed -= OnTimedEvent;
             ElapsedEventHandler OnLevelUp = UponMyDeath;
             lineTimer.Elapsed += OnLevelUp;
             lineTimer.Enabled = true;
@@ -400,7 +402,7 @@ namespace Tetris
             lineTimer.Stop();
             lineTimer.Elapsed -= OnLevelUp;
             timerCounter = 0;
-
+            timer.Elapsed += OnTimedEvent;
         }
 
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)
