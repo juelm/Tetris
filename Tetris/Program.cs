@@ -19,6 +19,11 @@ namespace Tetris
         static void Main(string[] args)
         {
 
+            SplashWriter splashscreen = new SplashWriter("TETRIS",5,5,1);
+
+            splashscreen.WriteWord();
+
+            Console.ReadKey();
             bool play = true;
 
             while (play)
