@@ -26,8 +26,9 @@ namespace Tetris
             Console.WriteLine("\n\nHit any key to play.");
             Console.WriteLine("\n\nq at any time quits.");
 
-            Console.ReadKey();
+            ConsoleKey initial = Console.ReadKey().Key;
             bool play = true;
+            if (initial == ConsoleKey.Q) play = false;
 
             while (play)
             {
