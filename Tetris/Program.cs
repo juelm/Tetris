@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Timers;
+using System.Threading;
 
 namespace Tetris
 {
@@ -21,7 +21,10 @@ namespace Tetris
 
             SplashWriter splashscreen = new SplashWriter(5,5, 1, ConsoleColor.White);
 
-            splashscreen.WriteWord("TETRIS");
+            splashscreen.WriteWord("TETRIS", ConsoleColor.Black, TextStyles.Calico);
+
+            Console.WriteLine("\n\nHit any key to play.");
+            Console.WriteLine("\n\nq at any time quits.");
 
             Console.ReadKey();
             bool play = true;

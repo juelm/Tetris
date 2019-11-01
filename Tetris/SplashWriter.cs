@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 namespace Tetris
 {
+    public enum TextStyles {Solid, Multi, Calico };
+
     public class SplashWriter
     {
 
@@ -12,6 +15,19 @@ namespace Tetris
         ConsoleColor backGround;
         int x;
         int y;
+        Random rando = new Random();
+        //char[] stubborn = { 'R' };
+        Dictionary<int, ConsoleColor> colors = new Dictionary<int, ConsoleColor>()
+        {
+
+            { 0, ConsoleColor.DarkMagenta},
+            { 1, ConsoleColor.DarkCyan},
+            { 2, ConsoleColor.DarkRed},
+            { 3, ConsoleColor.DarkBlue},
+            { 4, ConsoleColor.DarkYellow},
+            { 5, ConsoleColor.DarkGreen},
+            { 6, ConsoleColor.DarkGray}
+        };
         Dictionary<char, int> letterDimensions = new Dictionary<char, int>()
         {
 
@@ -36,19 +52,6 @@ namespace Tetris
                                 0, 1, 0,
                                 0, 1, 0,
                                 0, 1, 0 } },
-
-            //{ 'R', new int[]{   0, 1, 1, 1, 0,
-            //                    0, 1, 0, 1, 0,
-            //                    0, 1, 1, 0, 0,
-            //                    0, 1, 0, 1, 0,
-            //                    0, 1, 0, 1, 0} },
-
-            //{ 'R', new int[]{   0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-            //                    0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-            //                    0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-            //                    0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-            //                    0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-            //                    0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0} },
 
             { 'R', new int[]{   0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
                                 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
@@ -94,23 +97,54 @@ namespace Tetris
 
         }
 
-        public void WriteWord(string title)
+        public void WriteWord(string title, ConsoleColor color = ConsoleColor.Black, TextStyles textStyle = TextStyles.Solid)
         {
             int curX = x;
             int curY = y;
             int startX = x + Xmargin;
 
+
             DrawBackground(title);
 
-            foreach (char l in title)
+            switch (textStyle)
             {
-                int pixWidth = l == 'R' ? pixHeight : pixHeight * 2;
-                WriteLetter(l, startX, y, ConsoleColor.Magenta, ConsoleColor.Magenta);
-                startX += letterDimensions[l] * pixWidth;
+                case TextStyles.Multi:
+                    foreach (char l in title)
+                    {
+                        int pixWidth = l == 'R' ? pixHeight : pixHeight * 2;
+                        WriteLetter(l, startX, y, colors[rando.Next(7)]);
+                        startX += letterDimensions[l] * pixWidth;
+                    }
+                    break;
+                case TextStyles.Calico:
+                    foreach (char l in title)
+                    {
+                        int pixWidth = l == 'R' ? pixHeight : pixHeight * 2;
+                        WriteLetter(l, startX, y);
+                        startX += letterDimensions[l] * pixWidth;
+                    }
+                    break;
+
+                default:
+                    foreach (char l in title)
+                    {
+                        int pixWidth = l == 'R' ? pixHeight : pixHeight * 2;
+                        WriteLetter(l, startX, y, color);
+                        startX += letterDimensions[l] * pixWidth;
+                    }
+                    break;
+
             }
+
+            //foreach (char l in title)
+            //{
+            //    int pixWidth = l == 'R' ? pixHeight : pixHeight * 2;
+            //    WriteLetter(l, startX, y, ConsoleColor.Magenta);
+            //    startX += letterDimensions[l] * pixWidth;
+            //}
         }
 
-        public void WriteLetter(char letter, int x, int y, ConsoleColor background = ConsoleColor.White, ConsoleColor foreground = ConsoleColor.White, char icon = ' ')
+        public void WriteLetter(char letter, int x, int y, ConsoleColor background)
         {
             int[] arr = Alphabet[letter];
             int xDim = letterDimensions[letter];
@@ -136,7 +170,7 @@ namespace Tetris
                 {
                     Console.SetCursorPosition(posX, posY);
                     Console.BackgroundColor = background;
-                    Console.ForegroundColor = foreground;
+                    //Console.ForegroundColor = foreground;
                     //writePixel();
                     if (letter == 'R')
                     {
@@ -146,7 +180,51 @@ namespace Tetris
                     {
                         writePixel();
                     }
-                    
+
+                    Console.ResetColor();
+                }
+            }
+
+        }
+
+        public void WriteLetter(char letter, int x, int y)
+        {
+            int[] arr = Alphabet[letter];
+            int xDim = letterDimensions[letter];
+            //int pixWidth = letter == 'R' ? pixHeight : pixHeight * 2;
+
+            int posX = x;
+            int posY = y;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (i % xDim == 0)
+                {
+                    posY += pixHeight;
+                    posX = x;
+                }
+
+                else
+                {
+                    if (letter == 'R') posX += pixWidth / 2;
+                    else posX += pixWidth;
+                }
+
+                if (arr[i] == 1)
+                {
+                    Console.SetCursorPosition(posX, posY);
+                    Console.BackgroundColor = colors[rando.Next(7)];
+                    //Console.ForegroundColor = foreground;
+                    //writePixel();
+                    if (letter == 'R')
+                    {
+                        DrawR();
+                    }
+                    else
+                    {
+                        writePixel();
+                    }
+                    Thread.Sleep(100);
+
                     Console.ResetColor();
                 }
             }
@@ -176,14 +254,16 @@ namespace Tetris
 
             foreach (char let in word)
             {
-                backgroundWidth += letterDimensions[let] * 2;
+                if(let == 'R') backgroundWidth += letterDimensions[let];
+                else backgroundWidth += letterDimensions[let] * 2;
+                
             }
-            //backgroundWidth += 2 * pixWidth;
+            backgroundWidth += 2 * pixWidth;
             backgroundHeight += pixHeight * 5 + Ymargin * 2;
 
             Console.SetCursorPosition(x, y);
             Console.BackgroundColor = backGround;
-            for(int i = 0; i < backgroundHeight; i++)
+            for (int i = 0; i < backgroundHeight; i++)
             {
                 Console.SetCursorPosition(x, Console.CursorTop);
                 for (int j = 0; j < backgroundWidth; j++)
