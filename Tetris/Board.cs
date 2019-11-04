@@ -235,15 +235,15 @@ namespace Tetris
         //    await Task.Run(displayScores);
         //}
 
-        //public void displayScores()
-        //{
-        //    Console.SetCursorPosition(cursorX + 3, cursorY + 3);
-        //    for (int i = 0; i < highScorers.Length; i++)
-        //    {
-        //        Console.SetCursorPosition(cursorX + 3, Console.CursorTop);
-        //        Console.WriteLine($"{i + 1}. {highScorers[i]}: \t{highScores[i]}");
-        //    }
-        //}
+        public void displayScores()
+        {
+            Console.SetCursorPosition(cursorX + 3, cursorY + 3);
+            for (int i = 0; i < highScorers.Length; i++)
+            {
+                Console.SetCursorPosition(cursorX + 3, Console.CursorTop);
+                Console.WriteLine($"{i + 1}. {highScorers[i]}: \t{highScores[i]}");
+            }
+        }
 
         public void updateScores(int currentScore)
         {

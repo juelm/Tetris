@@ -57,7 +57,7 @@ namespace Tetris
             Console.CursorVisible = false;
             board.createBoard();
             board.drawBoard();
-            //board.getHighScoreBoard().displayScores();
+            board.getHighScoreBoard().displayScores();
             current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
 
             foreach(Point p in board.getBorders())
@@ -84,7 +84,7 @@ namespace Tetris
                 if (wasBlocked)
                 {
                     userInput = ConsoleKey.UpArrow;
-                    //board.getHighScoreBoard().displayScores();
+                    board.getHighScoreBoard().displayScores();
                     wasBlocked = false;
                 }
 
@@ -395,7 +395,7 @@ namespace Tetris
 
             Console.SetCursorPosition(centerX + messX, centerY + messY);
             board.getHighScoreBoard().updateScores(score);
-            //board.getHighScoreBoard().displayScores();
+            board.getHighScoreBoard().displayScores();
             Console.WriteLine(message);
             Console.SetCursorPosition(centerX + line2X, centerY + messY + 1);
             Console.WriteLine(line2);
