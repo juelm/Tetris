@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 namespace Tetris
 {
     public class Board
@@ -15,6 +17,8 @@ namespace Tetris
         private Scoreboard score;
         private Scoreboard lines;
         private Scoreboard level;
+        private HighScoreBoard highScoreBoard;
+
 
 
         public int Height
@@ -68,6 +72,11 @@ namespace Tetris
             return level;
         }
 
+        public HighScoreBoard getHighScoreBoard()
+        {
+            return highScoreBoard;
+        }
+
         public Board(int x, int y, Point pt, ConsoleColor color)
         {
 
@@ -80,7 +89,7 @@ namespace Tetris
         }
 
 
-        private void createBoard()
+        public void createBoard()
         {
             for (int i = start.Y; i <= start.Y + height; i++)
             {
@@ -101,11 +110,13 @@ namespace Tetris
             score = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y, color, ConsoleColor.Magenta, "Score:");
             lines = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 10, color, ConsoleColor.Cyan, "Lines:");
             level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 20, color, ConsoleColor.Yellow, "Level:");
+            highScoreBoard = new HighScoreBoard(height + 1, width - 10, Start.X + Width + scoreBoardOffsetX + 17, Start.Y, color, ConsoleColor.Green, "HighScores:");
+
         }
 
         public void drawBoard(ConsoleColor col = ConsoleColor.DarkGray)
         {
-            createBoard();
+            //createBoard();
 
             Console.BackgroundColor = col;
 
@@ -119,6 +130,9 @@ namespace Tetris
             score.drawScoreboard();
             lines.drawScoreboard();
             level.drawScoreboard();
+            highScoreBoard.drawScoreboard();
+            //highScoreBoard.displayScores();
+
 
         }
 
@@ -126,16 +140,16 @@ namespace Tetris
 
     public class Scoreboard
     {
-        string title;
-        int height;
-        int width;
-        int cursorX;
-        int cursorY;
-        ConsoleColor borderColor;
-        ConsoleColor textColor;
-        Point statCursor;
+        protected string title;
+        protected int height;
+        protected int width;
+        protected int cursorX;
+        protected int cursorY;
+        protected ConsoleColor borderColor;
+        protected ConsoleColor textColor;
+        protected Point statCursor;
 
-        public Point GetCursorPosition()
+        public virtual Point GetCursorPosition()
         {
             return statCursor;
         }
@@ -194,6 +208,78 @@ namespace Tetris
             Console.Write(title);
             Console.ResetColor();
             statCursor = new Point(cursorX + 3, cursorY + height / 2 + 1);
+        }
+    }
+
+    public class HighScoreBoard : Scoreboard
+    {
+        private int[] highScores;
+        private string[] highScorers;
+
+        public override Point GetCursorPosition()
+        {
+            return new Point(cursorX + 3, cursorY + 3);
+        }
+        public int[] getHighScores() { return highScores; }
+        public int[] getHighScorers() { return highScores; }
+
+
+        public HighScoreBoard(int height, int width, int cursorX, int cursorY, ConsoleColor borderColor, ConsoleColor textColor, string text) : base(height, width, cursorX, cursorY, borderColor, textColor, text)
+        {
+            highScores = new int[10] { 100, 82, 60, 44, 30, 12, 8, 6, 2, 1 };
+            highScorers = new string[10] { "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy" };
+        }
+
+        //public async void eventuallyDisplayScores()
+        //{
+        //    await Task.Run(displayScores);
+        //}
+
+        //public void displayScores()
+        //{
+        //    Console.SetCursorPosition(cursorX + 3, cursorY + 3);
+        //    for (int i = 0; i < highScorers.Length; i++)
+        //    {
+        //        Console.SetCursorPosition(cursorX + 3, Console.CursorTop);
+        //        Console.WriteLine($"{i + 1}. {highScorers[i]}: \t{highScores[i]}");
+        //    }
+        //}
+
+        public void updateScores(int currentScore)
+        {
+            int x = Console.CursorLeft;
+            int y = Console.CursorTop;
+            bool isAWinner = false;
+            int priorScore = 0;
+            string priorName = " ";
+
+            for(int i = 0; i < highScores.Length; i++)
+            {
+                if (!isAWinner)
+                {
+                    if (currentScore >= highScores[i])
+                    {
+                        isAWinner = true;
+                        priorName = highScorers[i];
+                        priorScore = highScores[i];
+                        Console.WriteLine("Congratulations! You cracked the leaderboard.");
+                        Console.SetCursorPosition(x, Console.CursorTop);
+                        Console.Write("\nEnter your Name: ");
+                        string playerName = Console.ReadLine();
+                        highScores[i] = currentScore;
+                        highScorers[i] = playerName;
+                    }
+                }
+                else
+                {
+                    int tempScore = highScores[i];
+                    string tempName = highScorers[i];
+                    highScores[i] = priorScore;
+                    highScorers[i] = priorName;
+                    priorScore = tempScore;
+                    priorName = tempName;
+                }
+            }
         }
     }
 }

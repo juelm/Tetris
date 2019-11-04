@@ -223,7 +223,7 @@ namespace Tetris
                     {
                         writePixel();
                     }
-                    Thread.Sleep(100);
+                    //Thread.Sleep(100);
 
                     Console.ResetColor();
                 }
