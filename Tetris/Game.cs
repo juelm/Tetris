@@ -28,11 +28,7 @@ namespace Tetris
         private int ms;
         private List<Point> edges = new List<Point>();
         private object threadLock = new object();
-        //private int[] highScores;
-        //private string[] highScorers;
-        private bool wasBlocked = false;
-        //List<Block> fallingDebris = new List<Block>();
-        // private List<Block> lines;
+        //private bool wasBlocked = false;
 
 
 
@@ -46,8 +42,6 @@ namespace Tetris
             timer = new Timer(ms);
             lineTimer = new Timer(ms / 4);
             state = new List<Block>();
-            //highScores = new int[10] { 100, 82, 60, 44, 30, 12, 8, 6, 2, 1 };
-            //highScorers = new string[10] { "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy" };
 
         }
 
@@ -186,7 +180,7 @@ namespace Tetris
                                 current.Arrange();
                                 current.render();
 
-                                if (nextLevel == 5)
+                                if (nextLevel >= 5)
                                 {
                                     nextLevel = 0;
                                     level++;
@@ -199,7 +193,7 @@ namespace Tetris
 
                                 delay = 0;
 
-                                wasBlocked = true;
+                                //wasBlocked = true;
                             }
 
                             else
@@ -421,7 +415,7 @@ namespace Tetris
             lineTimer.Elapsed -= OnLevelUp;
             timerCounter = 0;
             timer.Elapsed += OnTimedEvent;
-            timer.Interval = ms / 1.5;
+            timer.Interval = ms / level;
         }
 
         public void clearBufferKey()
@@ -431,11 +425,6 @@ namespace Tetris
                 Console.ReadKey(false);
             }
         }
-
-        //public void OnLineDeletion(Object source, ElapsedEventArgs e)
-        //{
-        //    timerCounter++;
-        //}
 
     } 
 }

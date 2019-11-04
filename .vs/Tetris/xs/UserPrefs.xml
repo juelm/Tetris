@@ -1,21 +1,22 @@
 ﻿<Properties StartupConfiguration="{5E3DD3A3-B881-47BD-BD64-84AD0A96CAFC}|Default">
   <MonoDevelop.Ide.ItemProperties.Tetris PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/Board.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/Game.cs">
     <Files>
       <File FileName="Tetris/Block.cs" Line="94" Column="1" />
       <File FileName="Tetris/Point.cs" />
       <File FileName="Tetris/Program.cs" />
       <File FileName="Tetris/SplashWriter.cs" />
-      <File FileName="Tetris/Game.cs" />
-      <File FileName="Tetris/ShapeDictionary.cs" />
-      <File FileName="Tetris/Board.cs" Line="17" Column="34" />
+      <File FileName="Tetris/Game.cs" Line="433" Column="10" />
+      <File FileName="Tetris/ShapeDictionary.cs" Line="1" Column="1" />
+      <File FileName="Tetris/Board.cs" Line="232" Column="105" />
+      <File FileName="Tetris/Shape.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Tetris" expanded="True">
             <Node name="Tetris" expanded="True">
-              <Node name="Board.cs" selected="True" />
+              <Node name="Game.cs" selected="True" />
             </Node>
           </Node>
         </State>

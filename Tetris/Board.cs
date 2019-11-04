@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 namespace Tetris
 {
     public class Board
@@ -213,7 +214,7 @@ namespace Tetris
 
     public class HighScoreBoard : Scoreboard
     {
-        private int[] highScores;
+        private int[] highScores = new int[10];
         private string[] highScorers;
 
         public override Point GetCursorPosition()
@@ -221,19 +222,26 @@ namespace Tetris
             return new Point(cursorX + 3, cursorY + 3);
         }
         public int[] getHighScores() { return highScores; }
-        public int[] getHighScorers() { return highScores; }
+        public string[] getHighScorers() { return highScorers; }
 
 
         public HighScoreBoard(int height, int width, int cursorX, int cursorY, ConsoleColor borderColor, ConsoleColor textColor, string text) : base(height, width, cursorX, cursorY, borderColor, textColor, text)
         {
-            highScores = new int[10] { 100, 82, 60, 44, 30, 12, 8, 6, 2, 1 };
-            highScorers = new string[10] { "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy" };
-        }
+            highScorers = File.ReadAllLines("/Users/matthewjuel/Projects/Tetris/Tetris/highScorers.txt");
+            string[] highScoresText = File.ReadAllLines("/Users/matthewjuel/Projects/Tetris/Tetris/highScores.txt");
 
-        //public async void eventuallyDisplayScores()
-        //{
-        //    await Task.Run(displayScores);
-        //}
+            for (int i = 0; i < highScoresText.Length; i++)
+            {
+                try
+                {
+                    highScores[i] = Convert.ToInt32(highScoresText[i]);
+                }
+                catch
+                {
+                    highScores[i] = 0;
+                }
+            }
+        }
 
         public void displayScores()
         {
@@ -241,7 +249,10 @@ namespace Tetris
             for (int i = 0; i < highScorers.Length; i++)
             {
                 Console.SetCursorPosition(cursorX + 3, Console.CursorTop);
-                Console.WriteLine($"{i + 1}. {highScorers[i]}: \t{highScores[i]}");
+                Console.Write($"{i + 1}. {highScorers[i]}:");
+                Console.SetCursorPosition(cursorX + width - 6, Console.CursorTop);
+                Console.WriteLine(highScores[i]);
+
             }
         }
 
@@ -279,6 +290,16 @@ namespace Tetris
                     priorScore = tempScore;
                     priorName = tempName;
                 }
+            }
+            if (isAWinner)
+            {
+                File.WriteAllLines("/Users/matthewjuel/Projects/Tetris/Tetris/highScorers.txt", highScorers);
+                string[] textScores = new string[10];
+                for(int i = 0; i < highScores.Length; i++)
+                {
+                    textScores[i] = Convert.ToString(highScores[i]);
+                }
+                File.WriteAllLines("/Users/matthewjuel/Projects/Tetris/Tetris/highScores.txt", textScores);
             }
         }
     }
