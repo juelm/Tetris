@@ -28,6 +28,9 @@ namespace Tetris
         private int ms;
         private List<Point> edges = new List<Point>();
         private object threadLock = new object();
+        //private int[] highScores;
+        //private string[] highScorers;
+        private bool wasBlocked = false;
         //List<Block> fallingDebris = new List<Block>();
         // private List<Block> lines;
 
@@ -43,13 +46,18 @@ namespace Tetris
             timer = new Timer(ms);
             lineTimer = new Timer(ms / 4);
             state = new List<Block>();
+            //highScores = new int[10] { 100, 82, 60, 44, 30, 12, 8, 6, 2, 1 };
+            //highScorers = new string[10] { "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy", "Linus", "Anders", "Matt", "Eddy" };
+
         }
 
         public bool playGame()
         {
             Console.Clear();
             Console.CursorVisible = false;
+            board.createBoard();
             board.drawBoard();
+            //board.getHighScoreBoard().displayScores();
             current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
 
             foreach(Point p in board.getBorders())
@@ -73,6 +81,13 @@ namespace Tetris
 
             while (notDead && (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow))
             {
+                if (wasBlocked)
+                {
+                    userInput = ConsoleKey.UpArrow;
+                    //board.getHighScoreBoard().displayScores();
+                    wasBlocked = false;
+                }
+
                 userInput = Console.ReadKey().Key;
 
                 notDead = processInput(userInput);
@@ -187,16 +202,20 @@ namespace Tetris
                                 alive = !current.checkCollision(state, 0, -1);
 
                                 delay = 0;
+
+                                wasBlocked = true;
                             }
 
                             else
                             {
                                 delay++;
+
                             }
 
                         }
                     }
                 }
+
             }
 
             return alive;
@@ -314,6 +333,16 @@ namespace Tetris
             Console.ForegroundColor = board.getLevel().GetTextColor();
             Console.Write(this.level);
             Console.ResetColor();
+
+            //int[] highScore = board.getHighScoreBoard().getHighScores();
+            //int[] highScorer = board.getHighScoreBoard().getHighScorers();
+
+            //Console.SetCursorPosition(board.getHighScoreBoard().GetCursorPosition().X, board.getHighScoreBoard().GetCursorPosition().Y);
+            //for (int i = 0; i < highScorers.Length; i++)
+            //{
+            //    Console.SetCursorPosition(board.getHighScoreBoard().GetCursorPosition().X, Console.CursorTop);
+            //    Console.WriteLine($"{i + 1}. {highScorers[i]}: \t{highScores[i]}");
+            //}
         }
 
         public ConsoleKey gameOver()
@@ -365,6 +394,8 @@ namespace Tetris
             Console.ResetColor();
 
             Console.SetCursorPosition(centerX + messX, centerY + messY);
+            board.getHighScoreBoard().updateScores(score);
+            //board.getHighScoreBoard().displayScores();
             Console.WriteLine(message);
             Console.SetCursorPosition(centerX + line2X, centerY + messY + 1);
             Console.WriteLine(line2);
@@ -405,6 +436,14 @@ namespace Tetris
             timerCounter = 0;
             timer.Elapsed += OnTimedEvent;
             timer.Interval = ms / 1.5;
+        }
+
+        public void clearBufferKey()
+        {
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(false);
+            }
         }
 
         //public void OnLineDeletion(Object source, ElapsedEventArgs e)
