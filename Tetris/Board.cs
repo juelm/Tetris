@@ -131,7 +131,7 @@ namespace Tetris
             lines.drawScoreboard();
             level.drawScoreboard();
             highScoreBoard.drawScoreboard();
-            //highScoreBoard.displayScores();
+            highScoreBoard.displayScores();
 
 
         }

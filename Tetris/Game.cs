@@ -79,14 +79,10 @@ namespace Tetris
             ConsoleKey userInput = ConsoleKey.UpArrow;
             bool notDead = true;
 
+
             while (notDead && (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow))
             {
-                if (wasBlocked)
-                {
-                    userInput = ConsoleKey.UpArrow;
-                    board.getHighScoreBoard().displayScores();
-                    wasBlocked = false;
-                }
+                while (Console.KeyAvailable == false);
 
                 userInput = Console.ReadKey().Key;
 
@@ -333,16 +329,6 @@ namespace Tetris
             Console.ForegroundColor = board.getLevel().GetTextColor();
             Console.Write(this.level);
             Console.ResetColor();
-
-            //int[] highScore = board.getHighScoreBoard().getHighScores();
-            //int[] highScorer = board.getHighScoreBoard().getHighScorers();
-
-            //Console.SetCursorPosition(board.getHighScoreBoard().GetCursorPosition().X, board.getHighScoreBoard().GetCursorPosition().Y);
-            //for (int i = 0; i < highScorers.Length; i++)
-            //{
-            //    Console.SetCursorPosition(board.getHighScoreBoard().GetCursorPosition().X, Console.CursorTop);
-            //    Console.WriteLine($"{i + 1}. {highScorers[i]}: \t{highScores[i]}");
-            //}
         }
 
         public ConsoleKey gameOver()
