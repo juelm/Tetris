@@ -16,7 +16,7 @@ namespace Tetris
         public static int startY = 5;
         public static int margin = 3;
         public static int boardHeight = Block.Height * 26;
-        public static int boardWidth = Block.Width * 20 + margin;
+        public static int boardWidth = Block.Width * 18 + margin;
         public static int ms = 500;
 
 
@@ -25,7 +25,7 @@ namespace Tetris
         static void Main(string[] args)
         {
 
-            SplashWriter splashscreen = new SplashWriter(5,5, 1, ConsoleColor.White);
+            SplashWriter splashscreen = new SplashWriter(5,5, 1, ConsoleColor.Black);
 
             splashscreen.WriteWord("TETRIS", ConsoleColor.Black, TextStyles.Calico);
 

@@ -128,8 +128,8 @@ namespace Tetris
             score = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y, color, ConsoleColor.Magenta, "Score:");
             lines = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 10, color, ConsoleColor.Cyan, "Lines:");
             level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 20, color, ConsoleColor.Yellow, "Level:");
-            next = new Nextboard(12, width - 10, Start.X + Width + scoreBoardOffsetX + 17, Start.Y, color, ConsoleColor.Blue, "Next:");
-            highScoreBoard = new HighScoreBoard(14, width - 10, Start.X + Width + scoreBoardOffsetX + 17, Start.Y + Height - 13, color, ConsoleColor.Green, "HighScores:");
+            next = new Nextboard(12, width - 8, Start.X + Width + scoreBoardOffsetX + 18, Start.Y, color, ConsoleColor.Blue, "Next:");
+            highScoreBoard = new HighScoreBoard(14, width - 8, Start.X + Width + scoreBoardOffsetX + 18, Start.Y + Height - 13, color, ConsoleColor.Green, "HighScores:");
 
         }
 
@@ -296,10 +296,10 @@ namespace Tetris
             }
         }
 
-        public void updateScores(int currentScore)
+        public void updateScores(int currentScore, int x, int y)
         {
-            int x = Console.CursorLeft;
-            int y = Console.CursorTop;
+            //int x = Console.CursorLeft;
+            //int y = Console.CursorTop;
             bool isAWinner = false;
             int priorScore = 0;
             string priorName = " ";
@@ -313,10 +313,16 @@ namespace Tetris
                         isAWinner = true;
                         priorName = highScorers[i];
                         priorScore = highScores[i];
-                        Console.WriteLine("Congratulations! You cracked the leaderboard.");
-                        Console.SetCursorPosition(x, Console.CursorTop);
-                        Console.Write("\nEnter your Name: ");
+                        Console.SetCursorPosition(x, y);
+                        Console.WriteLine("Congratulations!");
+                        
+                        Console.SetCursorPosition(x, y + 1);
+                        Console.WriteLine("You cracked the leaderboard.");
+                        Console.SetCursorPosition(x, y + 3);
+                        Console.CursorVisible = true;
+                        Console.Write("Enter your Name: ");
                         string playerName = Console.ReadLine();
+                        Console.CursorVisible = false;
                         highScores[i] = currentScore;
                         highScorers[i] = playerName;
                     }

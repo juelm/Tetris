@@ -5,4 +5,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="L.cs" />
+    <Compile Remove="Point.cs" />
+  </ItemGroup>
 </Project>
