@@ -308,44 +308,5 @@ namespace Tetris
             return collided;
 
         }
-
-
-
-
-        //public void revert()
-        //{
-        //    for(int i = 0; i < blocks.Length; i++)
-        //    {
-        //        Block temp = new Block(prior[i].X, prior[i].Y, prior[i].Color);
-        //        temp.inflate();
-        //        blocks[i] = temp;
-        //    }
-
-        //}
-
-        //public void printAll()
-        //{
-        //    int index = 0;
-        //    foreach(Block blk in blocks)
-        //    {
-        //        foreach(Point pt in blk.getArea())
-        //        {
-        //            Console.SetCursorPosition(10, 10 + index);
-        //            Console.Write($"X: {pt.X}, Y: {pt.Y}");
-        //            index++;
-        //        }
-
-        //        int ind = 0;
-        //        foreach (Block b in prior)
-        //        {
-        //            foreach (Point p in b.getArea())
-        //            {
-        //                Console.SetCursorPosition(30, 10 + ind);
-        //                Console.Write($"X: {p.X}, Y: {p.Y}");
-        //                ind++;
-        //            }
-        //        }
-        //    }
-        //}
     }
 }

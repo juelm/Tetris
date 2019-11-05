@@ -20,13 +20,13 @@ namespace Tetris
         Dictionary<int, ConsoleColor> colors = new Dictionary<int, ConsoleColor>()
         {
 
-            { 0, ConsoleColor.DarkMagenta},
-            { 1, ConsoleColor.DarkCyan},
-            { 2, ConsoleColor.DarkRed},
-            { 3, ConsoleColor.DarkBlue},
-            { 4, ConsoleColor.DarkYellow},
-            { 5, ConsoleColor.DarkGreen},
-            { 6, ConsoleColor.DarkGray}
+            { 0, ConsoleColor.Magenta},
+            { 1, ConsoleColor.Cyan},
+            { 2, ConsoleColor.Red},
+            { 3, ConsoleColor.Blue},
+            { 4, ConsoleColor.Yellow},
+            { 5, ConsoleColor.Green},
+            //{ 6, ConsoleColor.DarkGray}
         };
         Dictionary<char, int> letterDimensions = new Dictionary<char, int>()
         {
@@ -112,7 +112,7 @@ namespace Tetris
                     foreach (char l in title)
                     {
                         int pixWidth = l == 'R' ? pixHeight : pixHeight * 2;
-                        WriteLetter(l, startX, y, colors[rando.Next(7)]);
+                        WriteLetter(l, startX, y, colors[rando.Next(6)]);
                         startX += letterDimensions[l] * pixWidth;
                     }
                     break;
@@ -211,7 +211,7 @@ namespace Tetris
                 if (arr[i] == 1)
                 {
                     Console.SetCursorPosition(posX, posY);
-                    Console.BackgroundColor = colors[rando.Next(7)];
+                    Console.BackgroundColor = colors[rando.Next(6)];
                     if (letter == 'R')
                     {
                         DrawR();

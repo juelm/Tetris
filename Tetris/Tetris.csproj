@@ -7,5 +7,6 @@
 
   <ItemGroup>
     <Compile Remove="L.cs" />
+    <Compile Remove="Point.cs" />
   </ItemGroup>
 </Project>

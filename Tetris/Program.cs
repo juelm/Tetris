@@ -25,7 +25,7 @@ namespace Tetris
         static void Main(string[] args)
         {
 
-            SplashWriter splashscreen = new SplashWriter(5,5, 1, ConsoleColor.White);
+            SplashWriter splashscreen = new SplashWriter(5,5, 1, ConsoleColor.Black);
 
             splashscreen.WriteWord("TETRIS", ConsoleColor.Black, TextStyles.Calico);
 
