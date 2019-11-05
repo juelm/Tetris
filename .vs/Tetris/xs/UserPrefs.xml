@@ -1,21 +1,23 @@
 ﻿<Properties StartupConfiguration="{5E3DD3A3-B881-47BD-BD64-84AD0A96CAFC}|Default">
   <MonoDevelop.Ide.ItemProperties.Tetris PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/SplashWriter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/Point.cs">
     <Files>
-      <File FileName="Tetris/Block.cs" Line="199" Column="67" />
-      <File FileName="Tetris/Board.cs" Line="34" Column="31" />
-      <File FileName="Tetris/Game.cs" Line="26" Column="31" />
-      <File FileName="Tetris/Program.cs" Line="10" Column="36" />
-      <File FileName="Tetris/Shape.cs" Line="310" Column="10" />
-      <File FileName="Tetris/ShapeDictionary.cs" Line="1" Column="1" />
-      <File FileName="Tetris/SplashWriter.cs" Line="13" Column="21" />
+      <File FileName="Tetris/Block.cs" Line="211" Column="1" />
+      <File FileName="Tetris/Board.cs" />
+      <File FileName="Tetris/Game.cs" />
+      <File FileName="Tetris/Program.cs" />
+      <File FileName="Tetris/Shape.cs" Line="28" Column="1" />
+      <File FileName="Tetris/ShapeDictionary.cs" />
+      <File FileName="Tetris/SplashWriter.cs" />
+      <File FileName="Tetris/L.cs" Line="1" Column="1" />
+      <File FileName="Tetris/Point.cs" Line="41" Column="4" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Tetris" expanded="True">
             <Node name="Tetris" expanded="True">
-              <Node name="SplashWriter.cs" selected="True" />
+              <Node name="Point.cs" selected="True" />
             </Node>
           </Node>
         </State>

@@ -191,7 +191,6 @@ namespace Tetris
         {
             int[] arr = Alphabet[letter];
             int xDim = letterDimensions[letter];
-            //int pixWidth = letter == 'R' ? pixHeight : pixHeight * 2;
 
             int posX = x;
             int posY = y;
@@ -213,8 +212,6 @@ namespace Tetris
                 {
                     Console.SetCursorPosition(posX, posY);
                     Console.BackgroundColor = colors[rando.Next(7)];
-                    //Console.ForegroundColor = foreground;
-                    //writePixel();
                     if (letter == 'R')
                     {
                         DrawR();
@@ -223,7 +220,9 @@ namespace Tetris
                     {
                         writePixel();
                     }
-                    //Thread.Sleep(100);
+
+                    //Uncomment to add animation
+                    //Thread.Sleep(100); 
 
                     Console.ResetColor();
                 }
@@ -250,7 +249,6 @@ namespace Tetris
         {
             int backgroundHeight = 0;
             int backgroundWidth = 0;
-            //ConsoleColor backColor = ConsoleColor.White;
 
             foreach (char let in word)
             {

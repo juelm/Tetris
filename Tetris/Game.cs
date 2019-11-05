@@ -29,7 +29,7 @@ namespace Tetris
         private List<Point> edges = new List<Point>();
         private object threadLock = new object();
         private int nextRando;
-
+        bool notDead = true;
 
 
         public Game(int x, int y, int height, int width, int ms)
@@ -76,7 +76,7 @@ namespace Tetris
             timer.Enabled = true;
 
             ConsoleKey userInput = ConsoleKey.UpArrow;
-            bool notDead = true;
+            //bool notDead = true;
 
 
 
@@ -85,12 +85,15 @@ namespace Tetris
 
             while (notDead && (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow))
             {
-                while (Console.KeyAvailable == false); //Without this loop control hangs up on the readkey and creates strange behavior in critical section.
+                while (Console.KeyAvailable == false) //Without this loop control hangs up on the readkey and creates strange behavior in critical section.
+                    if (!notDead) break;
 
+                if (!notDead) break;
+                
                 userInput = Console.ReadKey().Key;
 
                 notDead = processInput(userInput); // Returns a bool determining whether or not the game is over, which governs the loop.
-
+                    
             }
 
             //Receives user's decision to play or quit after game and returns to Program class.
@@ -223,7 +226,12 @@ namespace Tetris
 
                                 delay = 0;
 
-                                //wasBlocked = true;
+                                if (!alive)
+                                {
+                                    notDead = alive;
+                                    return alive;
+                                }
+
                             }
 
                             else
@@ -415,7 +423,7 @@ namespace Tetris
 
         public ConsoleKey gameOver()
         {
-            int length = 39;
+            int length = board.Width - 2;
             int height = 10;
             int centerX = board.Start.X + (board.Width - length) / 2;
             int centerY = board.Start.Y + (board.Height - height) / 2;
@@ -447,6 +455,9 @@ namespace Tetris
             timer.Elapsed -= UponMyDeath;
             timerCounter = 0;
 
+            board.getHighScoreBoard().updateScores(score, board.Start.X + 2, centerY);
+            board.getHighScoreBoard().displayScores();
+
             Console.BackgroundColor = ConsoleColor.Black;
             for (int i = 0; i < height; i++)
             {
@@ -461,9 +472,10 @@ namespace Tetris
 
             Console.ResetColor();
 
+            //Console.SetCursorPosition(centerX + messX, centerY + messY);
+            //board.getHighScoreBoard().updateScores(score, board.Start.X + 2, centerY);
+            //board.getHighScoreBoard().displayScores();
             Console.SetCursorPosition(centerX + messX, centerY + messY);
-            board.getHighScoreBoard().updateScores(score);
-            board.getHighScoreBoard().displayScores();
             Console.WriteLine(message);
             Console.SetCursorPosition(centerX + line2X, centerY + messY + 1);
             Console.WriteLine(line2);
@@ -514,14 +526,6 @@ namespace Tetris
             timer.Elapsed += OnTimedEvent;
             timer.Interval = ms / level;
         }
-
-        //public void clearBufferKey()
-        //{
-        //    while (Console.KeyAvailable)
-        //    {
-        //        Console.ReadKey(false);
-        //    }
-        //}
 
     } 
 }
