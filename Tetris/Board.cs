@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using System.IO;
 namespace Tetris
 {
+
+    /// <summary>
+    /// Creates and renders all components of board including borders and scoreboards.
+    /// </summary>
     public class Board
     {
         private int height;
@@ -18,6 +22,7 @@ namespace Tetris
         private Scoreboard score;
         private Scoreboard lines;
         private Scoreboard level;
+        private Nextboard next;
         private HighScoreBoard highScoreBoard;
 
 
@@ -73,10 +78,17 @@ namespace Tetris
             return level;
         }
 
+        public Scoreboard getNext()
+        {
+            return next;
+        }
+
         public HighScoreBoard getHighScoreBoard()
         {
             return highScoreBoard;
         }
+
+
 
         public Board(int x, int y, Point pt, ConsoleColor color)
         {
@@ -89,6 +101,11 @@ namespace Tetris
 
         }
 
+
+
+
+
+        //Instantiates each point in game board border and all scoreboards
 
         public void createBoard()
         {
@@ -111,13 +128,19 @@ namespace Tetris
             score = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y, color, ConsoleColor.Magenta, "Score:");
             lines = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 10, color, ConsoleColor.Cyan, "Lines:");
             level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 20, color, ConsoleColor.Yellow, "Level:");
-            highScoreBoard = new HighScoreBoard(height + 1, width - 10, Start.X + Width + scoreBoardOffsetX + 17, Start.Y, color, ConsoleColor.Green, "HighScores:");
+            next = new Nextboard(12, width - 10, Start.X + Width + scoreBoardOffsetX + 17, Start.Y, color, ConsoleColor.Blue, "Next:");
+            highScoreBoard = new HighScoreBoard(14, width - 10, Start.X + Width + scoreBoardOffsetX + 17, Start.Y + Height - 13, color, ConsoleColor.Green, "HighScores:");
 
         }
 
+
+
+
+
+        //Renders each point in game board border and all scoreboards
+
         public void drawBoard(ConsoleColor col = ConsoleColor.DarkGray)
         {
-            //createBoard();
 
             Console.BackgroundColor = col;
 
@@ -131,6 +154,7 @@ namespace Tetris
             score.drawScoreboard();
             lines.drawScoreboard();
             level.drawScoreboard();
+            next.drawScoreboard();
             highScoreBoard.drawScoreboard();
             highScoreBoard.displayScores();
 
@@ -139,6 +163,13 @@ namespace Tetris
 
     }
 
+
+
+
+
+    /// <summary>
+    /// Creates and renders a scoreboard object to track game statistics. 
+    /// </summary>
     public class Scoreboard
     {
         protected string title;
@@ -211,6 +242,15 @@ namespace Tetris
             statCursor = new Point(cursorX + 3, cursorY + height / 2 + 1);
         }
     }
+
+
+
+
+
+    /// <summary>
+    /// Creates and renders a HighScoreBoard object.
+    /// Upon initialization, reads in highscores.txt and highscorers.txt to populate high score board. Tracks any changes and writes them to the same files.
+    /// </summary>
 
     public class HighScoreBoard : Scoreboard
     {
@@ -301,6 +341,28 @@ namespace Tetris
                 }
                 File.WriteAllLines("/Users/matthewjuel/Projects/Tetris/Tetris/highScores.txt", textScores);
             }
+        }
+    }
+
+
+
+
+
+    /// <summary>
+    /// Creates and renders a Nextboard object to display the next shape. 
+    /// </summary>
+
+    public class Nextboard : Scoreboard
+    {
+        public Nextboard(int height, int width, int cursorX, int cursorY, ConsoleColor borderColor, ConsoleColor textColor, string text) : base(height, width, cursorX, cursorY, borderColor, textColor, text)
+        {
+            
+        }
+
+        public override Point GetCursorPosition()
+        {
+      
+            return new Point(cursorX + (this.width - Block.Width * 5) / 2, cursorY + (this.height - Block.Height * 5) / 2);
         }
     }
 }

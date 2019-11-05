@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace Tetris
 {
+
     public class Shape
     {
 
@@ -33,11 +34,17 @@ namespace Tetris
             }
         }
 
+
+
+
+
+        //Block configurations for a given shape are represented as a 5 x 5 array of integers and are read in from 
+        //ShapeDictionary class upon initialization based on random number and stored in configurations instance variable
+
         public Shape (int x, int y, int rando)
         {
             this.x = x;
             this.y = y;
-            //this.color = color;
 
             if(rando == 0)
             {
@@ -78,30 +85,42 @@ namespace Tetris
             }
         }
 
+
         public Block [] getBlocks()
         {
             return blocks;
         }
 
+
+
+
+
+
         public void render()
         {
-            //Console.SetCursorPosition(1, 1);
-            //Console.Write($"X: {x}, Y: {y} ");
             foreach (Block bk in blocks)
             {
                 bk.draw();
             }
         }
 
+
+
+
+
+
         public void delete()
         {
-            //Console.SetCursorPosition(1, 2);
-            //Console.Write(prior.Length);
             foreach (Block bk in prior)
             {
                 bk.erase();
             }
         }
+
+
+
+
+
 
         public void Move(ConsoleKey pressed)
         {
@@ -126,6 +145,12 @@ namespace Tetris
 
         }
 
+
+
+
+
+        //Instantiates each block for the current position of the shape and stores them in the "blocks" instance variable
+        //and records the previous position of each block in the "prior" instance variable for deletion.
 
         public void Arrange()
         {
@@ -167,6 +192,12 @@ namespace Tetris
             }
         }
 
+
+
+
+
+        //Changes the configuration of the blocks in shape to one of the other arrangements in the configurations instance variable
+
         public void Mutate(List<Point> edges, List<Block> gameState)
         {
             bool hitBorder = false;
@@ -184,16 +215,16 @@ namespace Tetris
             
             Arrange();
 
-            hitBorder = checkCollision(edges, 0, 0);
+            hitBorder = checkCollision(edges, 0, 0); //Check to see if requested mutation will collide with other blocks or walls
             hitShape = checkCollision(gameState, 0, 0);
 
-            if(!hitBorder && !hitShape)
+            if(!hitBorder && !hitShape) //if no collision delete prior and render
             {
                 delete();
 
                 render();
             }
-            else
+            else                        //if collision revert to prior and render
             {
                 configuration = previous;
                 Arrange();
@@ -202,7 +233,13 @@ namespace Tetris
 
         }
 
-        public bool checkCollision(List<Block> obstacles, int xOffset, int yOffset)
+
+
+
+
+        //Check for collision with other blocks or walls. Overloaded for convenience as walls are individual points and blocks are array of points.
+
+        public bool checkCollision(List<Block> obstacles, int xOffset, int yOffset) // X & Y offset to determine collision before visual overlap
         {
             bool collided = false;
 
@@ -215,7 +252,7 @@ namespace Tetris
 
         }
 
-        public bool checkCollision(List<Point> borders, int xOffset, int yOffset)
+        public bool checkCollision(List<Point> borders, int xOffset, int yOffset) // X & Y offset to determine collision before visual overlap
         {
             bool collided = false;
 
@@ -228,7 +265,14 @@ namespace Tetris
 
         }
 
-        public bool checkBlocks(Block obstacle, int xOffset, int yOffset)
+
+
+
+
+        
+        //Checks each point in each block in shape against each block in obstacle for collision
+
+        public bool checkBlocks(Block obstacle, int xOffset, int yOffset) // X & Y offset to determine collision before visual overlap
         {
             bool collided = false;
 
@@ -242,7 +286,12 @@ namespace Tetris
 
         }
 
-        public bool checkPoints(Point p, int xOffset, int yOffset)
+
+
+
+        //Checks each point in each block in shape against given Point p
+
+        public bool checkPoints(Point p, int xOffset, int yOffset) // X & Y offset to determine collision before visual overlap
         {
             bool collided = false;
 
@@ -260,40 +309,43 @@ namespace Tetris
 
         }
 
-        public void revert()
-        {
-            for(int i = 0; i < blocks.Length; i++)
-            {
-                Block temp = new Block(prior[i].X, prior[i].Y, prior[i].Color);
-                temp.inflate();
-                blocks[i] = temp;
-            }
 
-        }
 
-        public void printAll()
-        {
-            int index = 0;
-            foreach(Block blk in blocks)
-            {
-                foreach(Point pt in blk.getArea())
-                {
-                    Console.SetCursorPosition(10, 10 + index);
-                    Console.Write($"X: {pt.X}, Y: {pt.Y}");
-                    index++;
-                }
 
-                int ind = 0;
-                foreach (Block b in prior)
-                {
-                    foreach (Point p in b.getArea())
-                    {
-                        Console.SetCursorPosition(30, 10 + ind);
-                        Console.Write($"X: {p.X}, Y: {p.Y}");
-                        ind++;
-                    }
-                }
-            }
-        }
+        //public void revert()
+        //{
+        //    for(int i = 0; i < blocks.Length; i++)
+        //    {
+        //        Block temp = new Block(prior[i].X, prior[i].Y, prior[i].Color);
+        //        temp.inflate();
+        //        blocks[i] = temp;
+        //    }
+
+        //}
+
+        //public void printAll()
+        //{
+        //    int index = 0;
+        //    foreach(Block blk in blocks)
+        //    {
+        //        foreach(Point pt in blk.getArea())
+        //        {
+        //            Console.SetCursorPosition(10, 10 + index);
+        //            Console.Write($"X: {pt.X}, Y: {pt.Y}");
+        //            index++;
+        //        }
+
+        //        int ind = 0;
+        //        foreach (Block b in prior)
+        //        {
+        //            foreach (Point p in b.getArea())
+        //            {
+        //                Console.SetCursorPosition(30, 10 + ind);
+        //                Console.Write($"X: {p.X}, Y: {p.Y}");
+        //                ind++;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

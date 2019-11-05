@@ -28,7 +28,7 @@ namespace Tetris
         private int ms;
         private List<Point> edges = new List<Point>();
         private object threadLock = new object();
-        //private bool wasBlocked = false;
+        private int nextRando;
 
 
 
@@ -47,21 +47,26 @@ namespace Tetris
 
         public bool playGame()
         {
+
+            //Set up game.  Instantiate current block next block and board  
+
             Console.Clear();
             Console.CursorVisible = false;
+
             board.createBoard();
             board.drawBoard();
             board.getHighScoreBoard().displayScores();
-            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
 
-            foreach(Point p in board.getBorders())
+            current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
+            current.Arrange();
+            current.render();
+
+            nextRando = rando.Next(7);
+
+            foreach (Point p in board.getBorders())
             {
                 edges.Add(p);
             }
-
-            current.Arrange();
-
-            current.render();
 
             setStats();
 
@@ -74,15 +79,21 @@ namespace Tetris
             bool notDead = true;
 
 
+
+            //-----------Handles all user input---------------
+
+
             while (notDead && (userInput == ConsoleKey.UpArrow || userInput == ConsoleKey.DownArrow || userInput == ConsoleKey.LeftArrow || userInput == ConsoleKey.RightArrow))
             {
-                while (Console.KeyAvailable == false);
+                while (Console.KeyAvailable == false); //Without this loop control hangs up on the readkey and creates strange behavior in critical section.
 
                 userInput = Console.ReadKey().Key;
 
-                notDead = processInput(userInput);
+                notDead = processInput(userInput); // Returns a bool determining whether or not the game is over, which governs the loop.
 
             }
+
+            //Receives user's decision to play or quit after game and returns to Program class.
 
             ConsoleKey playAgain = gameOver();
 
@@ -97,16 +108,27 @@ namespace Tetris
         }
 
 
+        //Event Handler for main program timer (instance variable = timer) that controls block falling.
+
         public void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             processInput(ConsoleKey.DownArrow);
 
         }
 
+        //Event Handler that controls animations on level up and game over.
+
         public void UponMyDeath(Object source, ElapsedEventArgs e)
         {
             timerCounter++;
         }
+
+
+
+        //-----------------------------------Primary Logic-------------------------------------
+
+        //Processes input from user and events to control game, move blocks, detect collisions.
+
 
         public bool processInput(ConsoleKey action)
         {
@@ -141,7 +163,12 @@ namespace Tetris
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
 
-                lock (threadLock)
+
+
+                //-----------------------Critical Section-----------------------
+                //Both the timer and user input threads access this code and change state
+
+                lock (threadLock) 
                 {
                     if (action == ConsoleKey.DownArrow)
                     {
@@ -153,7 +180,7 @@ namespace Tetris
 
                         else
                         {
-                            if (delay == 1)
+                            if (delay == 1) //Pauses fall for one cycle upon contact with surface below to allow player to slide block under another
                             {
                                 foreach (Block blk in current.getBlocks())
                                 {
@@ -170,15 +197,18 @@ namespace Tetris
                                     b.draw();
 
                                 }
-                                
+
+
+                                current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, nextRando);
+                                current.Arrange();
+                                current.render();
 
                                 board.drawBoard();
 
+                                nextRando = rando.Next(7);
+
                                 setStats();
 
-                                current = new Shape(board.SpawnPoint.X - Block.Width, board.SpawnPoint.Y, rando.Next(7));
-                                current.Arrange();
-                                current.render();
 
                                 if (nextLevel >= 5)
                                 {
@@ -206,23 +236,48 @@ namespace Tetris
                     }
                 }
 
+                //-----------------------End Critical Section-----------------------
+
             }
 
             return alive;
         }
 
+
+
+
+
+
+
+        //Checks for completed lines deletes any, tracks score and moves any blocks above them to fall onto lower blocks.
+        //Inelegant.  Consider replacing with Linq queries if time allows.
+
         public void Lines()
         {
+            
+            int[] YLines = new int[1000]; //Each index represents a y value and stores a count of the number of points with that y value
 
-            int[] YLines = new int[1000];
+
+
+            //If value for given index in YLines becomes equal to board width then line is complete and is added to Yindexes and toDelete
+
             List<Block> toDelete = new List<Block>();
             List<int> Yindexes= new List<int>();
+
+
+            //Any block with a point above the max Y value in Yindexes must fall to lower blocks and is added to fallingBlocks
+
             List<Block> fallingBlocks = new List<Block>();
+
+
             int maxY = 0;
             int minY = int.MaxValue;
             int lines = 0;
             bool lineCompleted = false;
 
+
+
+            //Determine the number of blocks at a given Y value (complete lines)
 
             foreach(Block blk in state)
             {
@@ -244,6 +299,9 @@ namespace Tetris
 
             if (!lineCompleted) return;
 
+
+            //Count the number of completed lines
+
             for(int i = 0; i < YLines.Length; i++)
             {
                 if(YLines[i] >= board.Width - Program.margin + 1)
@@ -252,9 +310,11 @@ namespace Tetris
                 }
             }
 
+
+            //Determine which blocks are in complete lines or above a completed line and are added to toDelete and fallingBlocks respectively
+
             foreach(Block bk in state)
             {
-                //bool wasFound = false;
                 foreach(Point p in bk.getArea())
                 {
                     bool wasFound = false;
@@ -297,6 +357,13 @@ namespace Tetris
         }
 
 
+
+
+
+
+
+        //Causes any block resting on a deleted line to fall to a lower block
+
         public void debrisFall(List<Block> fallingDebris, int lines)
         {
 
@@ -311,6 +378,14 @@ namespace Tetris
 
         }
 
+
+
+
+
+
+
+        //Sets lines, score, level and displays what the next shape will be.
+
         public void setStats()
         {
             Console.SetCursorPosition(board.getScore().GetCursorPosition().X, board.getScore().GetCursorPosition().Y);
@@ -323,7 +398,20 @@ namespace Tetris
             Console.ForegroundColor = board.getLevel().GetTextColor();
             Console.Write(this.level);
             Console.ResetColor();
+            Shape next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y,nextRando);
+            next.Arrange();
+            next.render();
         }
+
+
+
+
+
+
+
+
+
+        //displays animation and game over message. Determines if player achieved a high score. Receives user name and decision to play again. Returns to playGame. 
 
         public ConsoleKey gameOver()
         {
@@ -392,6 +480,15 @@ namespace Tetris
             return playAgain.Key;
         }
 
+
+
+
+
+
+
+
+        //Displays animation on level up.
+
         public void levelUp()
         {
             timer.Elapsed -= OnTimedEvent;
@@ -418,13 +515,13 @@ namespace Tetris
             timer.Interval = ms / level;
         }
 
-        public void clearBufferKey()
-        {
-            while (Console.KeyAvailable)
-            {
-                Console.ReadKey(false);
-            }
-        }
+        //public void clearBufferKey()
+        //{
+        //    while (Console.KeyAvailable)
+        //    {
+        //        Console.ReadKey(false);
+        //    }
+        //}
 
     } 
 }
