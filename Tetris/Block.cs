@@ -2,6 +2,12 @@
 using System.Drawing;
 namespace Tetris
 {
+
+
+    /// <summary>
+    /// Creates renders and controls all behavior for the individual block objects that comprise each shape and the state of the game board.
+    /// Each block is comprised of individual points.
+    /// </summary>
     public class Block
     {
 
@@ -13,7 +19,7 @@ namespace Tetris
         private static int width = height * 2;
         private Point[] area;
 
-        public Point Position { set; get; }
+        //public Point Position { set; get; }
 
         public ConsoleColor Color
         {
@@ -84,6 +90,11 @@ namespace Tetris
 
         }
 
+
+
+
+        //instantiates each point contained in the block
+
         public void inflate()
         {
 
@@ -103,25 +114,28 @@ namespace Tetris
                 }
                 posY++;
 
-                //Console.WriteLine($"X: {posX}, Y: {posY}");
             }
         }
 
+
+
+
+        //Renders each point contained in the block
+
         public void draw()
         {
-
-            //int index = 0;
             foreach (Point pt in area)
             {
                 Console.SetCursorPosition(pt.X, pt.Y);
                 Console.BackgroundColor = color;
                 Console.Write(" ");
-                //Console.SetCursorPosition(20, index + 25);
-                //Console.Write($"X: {pt.X}, Y: {pt.Y} ");
-                //index++;
             }
             Console.ResetColor();
         }
+
+
+
+
 
         public void Shift(ConsoleKey direction)
         {
@@ -142,21 +156,26 @@ namespace Tetris
 
         }
 
+
+
+
+        //Erases each point contained in the block
+
         public void erase()
         {
-            //int index = 0;
             foreach (Point pt in area)
             {
                 Console.SetCursorPosition(pt.X, pt.Y);
-                //Console.BackgroundColor = ConsoleColor.Black;
                 Console.Write(" ");
-                //Console.SetCursorPosition(0, index + 10);
-                //Console.Write($"X: {pt.X}, Y: {pt.Y} ");
-                //index++;
             }
 
             Console.ResetColor();
         }
+
+
+
+
+        //Checks each point in block for collision with given x / y coordinates
 
         public bool checkEveryPoint(int xCoord, int yCoord)
         {
@@ -172,7 +191,12 @@ namespace Tetris
             return didCollide;
         }
 
-        public bool checkBlock(Block b, int xOffset, int yOffset)
+
+
+
+        //Checks each point in block for collision with each block in b
+
+        public bool checkBlock(Block b, int xOffset, int yOffset) // X & Y offset to determine collision before visual overlap
         {
             bool collision = false;
             foreach(Point p in b.area)
