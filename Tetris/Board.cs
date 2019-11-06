@@ -18,6 +18,7 @@ namespace Tetris
         private List<Point> borders = new List<Point>();
         private Point spawnPoint;
         private int scoreBoardOffsetX = 6;
+        private int scoreBoardYMargin = 3;
         private ConsoleColor color;
         private Scoreboard score;
         private Scoreboard lines;
@@ -97,7 +98,7 @@ namespace Tetris
             height = y;
             start = pt;
             this.color = color;
-            spawnPoint = new Point(pt.X + width / 2, pt.Y);
+            spawnPoint = new Point(pt.X + width / 2 + 1, pt.Y);
 
         }
 
@@ -126,10 +127,10 @@ namespace Tetris
             }
 
             score = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y, color, ConsoleColor.Magenta, "Score:");
-            lines = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 10, color, ConsoleColor.Cyan, "Lines:");
-            level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + 20, color, ConsoleColor.Yellow, "Level:");
-            next = new Nextboard(12, width - 8, Start.X + Width + scoreBoardOffsetX + 18, Start.Y, color, ConsoleColor.Blue, "Next:");
-            highScoreBoard = new HighScoreBoard(14, width - 8, Start.X + Width + scoreBoardOffsetX + 18, Start.Y + Height - 13, color, ConsoleColor.Green, "HighScores:");
+            lines = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + score.Height + scoreBoardYMargin, color, ConsoleColor.Cyan, "Lines:");
+            level = new Scoreboard(7, 14, Start.X + Width + scoreBoardOffsetX, Start.Y + score.Height + lines.Height + scoreBoardYMargin * 2, color, ConsoleColor.Yellow, "Level:");
+            next = new Nextboard(10 + Block.Height, 32, Start.X + Width + scoreBoardOffsetX * 2 + score.Width, Start.Y, color, ConsoleColor.Blue, "Next:");
+            highScoreBoard = new HighScoreBoard(14, 32, Start.X + Width + scoreBoardOffsetX * 2 + score.Width, Start.Y + next.Height + scoreBoardYMargin - 1, color, ConsoleColor.Green, "HighScores:");
 
         }
 
@@ -190,6 +191,9 @@ namespace Tetris
         {
             return textColor;
         }
+
+        public int Height { get { return height; } }
+        public int Width { get { return width; } }
 
         public Scoreboard(int height, int width, int cursorX, int cursorY, ConsoleColor borderColor, ConsoleColor textColor, string text)
         {

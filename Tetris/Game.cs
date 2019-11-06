@@ -151,8 +151,8 @@ namespace Tetris
                 if (action == ConsoleKey.LeftArrow)
                 {
 
-                    hitEdge = current.checkCollision(edges, 1, 0);
-                    hitBlock = current.checkCollision(state, 1, 0);
+                    hitEdge = current.checkCollision(edges, Block.Width, 0);
+                    hitBlock = current.checkCollision(state, Block.Width, 0);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
@@ -160,8 +160,8 @@ namespace Tetris
                 if (action == ConsoleKey.RightArrow)
                 {
 
-                    hitEdge = current.checkCollision(edges, -1, 0);
-                    hitBlock = current.checkCollision(state, -1, 0);
+                    hitEdge = current.checkCollision(edges, -Block.Width, 0);
+                    hitBlock = current.checkCollision(state, -Block.Width, 0);
 
                     if (!hitEdge && !hitBlock) current.Move(action);
                 }
@@ -176,8 +176,8 @@ namespace Tetris
                     if (action == ConsoleKey.DownArrow)
                     {
 
-                        hitEdge = current.checkCollision(edges, 0, -1);
-                        hitBlock = current.checkCollision(state, 0, -1);
+                        hitEdge = current.checkCollision(edges, 0, -Block.Height);
+                        hitBlock = current.checkCollision(state, 0, -Block.Height);
 
                         if (!hitEdge && !hitBlock) current.Move(action);
 
@@ -280,7 +280,7 @@ namespace Tetris
 
             int maxY = 0;
             int minY = int.MaxValue;
-            int lines = 0;
+            int localLines = 0;
             bool lineCompleted = false;
 
 
@@ -295,7 +295,7 @@ namespace Tetris
                     int temp = YLines[pt.Y];
                     temp++;
                     YLines[pt.Y] = temp;
-                    if(temp >= board.Width - Program.margin + 1)
+                    if(temp >= board.Width - Program.margin)
                     {
                         Yindexes.Add(pt.Y);
                         if (pt.Y > maxY) maxY = pt.Y;
@@ -312,11 +312,13 @@ namespace Tetris
 
             for(int i = 0; i < YLines.Length; i++)
             {
-                if(YLines[i] >= board.Width - Program.margin + 1)
+                if(YLines[i] >= board.Width - Program.margin)
                 {
-                    lines++;
+                    localLines++;
                 }
             }
+
+            localLines = localLines / Block.Height;
 
 
             //Determine which blocks are in complete lines or above a completed line and are added to toDelete and fallingBlocks respectively
@@ -347,9 +349,9 @@ namespace Tetris
                 }
             }
 
-            this.lines += lines;
-            this.nextLevel += lines;
-            this.score += (int)Math.Pow(2,lines);
+            this.lines += localLines;
+            this.nextLevel += localLines;
+            this.score += (int)Math.Pow(2,localLines);
 
 
             foreach (Block b in toDelete)
@@ -360,7 +362,7 @@ namespace Tetris
             }
 
 
-            debrisFall(fallingBlocks, lines);
+            debrisFall(fallingBlocks, localLines);
 
         }
 
@@ -406,7 +408,27 @@ namespace Tetris
             Console.ForegroundColor = board.getLevel().GetTextColor();
             Console.Write(this.level);
             Console.ResetColor();
-            Shape next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y,nextRando);
+            Shape next;
+            //if (nextRando == 5) { next = new Shape(board.getNext().GetCursorPosition().X - Block.Width, board.getNext().GetCursorPosition().Y, nextRando); }
+            //else { next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y, nextRando); }
+            switch (nextRando)
+            {
+                case 0:
+                    next = new Shape(board.getNext().GetCursorPosition().X + Block.Height, board.getNext().GetCursorPosition().Y - 1, nextRando);
+                    break;
+                case 1:
+                    next = new Shape(board.getNext().GetCursorPosition().X - Block.Height, board.getNext().GetCursorPosition().Y - 1, nextRando);
+                    break;
+                case 4:
+                    next = new Shape(board.getNext().GetCursorPosition().X - Block.Height, board.getNext().GetCursorPosition().Y, nextRando);
+                    break;
+                case 5:
+                    next = new Shape(board.getNext().GetCursorPosition().X - Block.Height, board.getNext().GetCursorPosition().Y + 1, nextRando);
+                    break;
+                default:
+                    next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y, nextRando);
+                    break;
+            }
             next.Arrange();
             next.render();
         }
