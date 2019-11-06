@@ -408,7 +408,27 @@ namespace Tetris
             Console.ForegroundColor = board.getLevel().GetTextColor();
             Console.Write(this.level);
             Console.ResetColor();
-            Shape next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y,nextRando);
+            Shape next;
+            //if (nextRando == 5) { next = new Shape(board.getNext().GetCursorPosition().X - Block.Width, board.getNext().GetCursorPosition().Y, nextRando); }
+            //else { next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y, nextRando); }
+            switch (nextRando)
+            {
+                case 0:
+                    next = new Shape(board.getNext().GetCursorPosition().X + Block.Height, board.getNext().GetCursorPosition().Y - 1, nextRando);
+                    break;
+                case 1:
+                    next = new Shape(board.getNext().GetCursorPosition().X - Block.Height, board.getNext().GetCursorPosition().Y - 1, nextRando);
+                    break;
+                case 4:
+                    next = new Shape(board.getNext().GetCursorPosition().X - Block.Height, board.getNext().GetCursorPosition().Y, nextRando);
+                    break;
+                case 5:
+                    next = new Shape(board.getNext().GetCursorPosition().X - Block.Height, board.getNext().GetCursorPosition().Y + 1, nextRando);
+                    break;
+                default:
+                    next = new Shape(board.getNext().GetCursorPosition().X, board.getNext().GetCursorPosition().Y, nextRando);
+                    break;
+            }
             next.Arrange();
             next.render();
         }
