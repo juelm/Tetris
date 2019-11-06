@@ -133,7 +133,7 @@ namespace Tetris
                     x += Block.Width;
                     break;
                 case ConsoleKey.DownArrow:
-                    y += 1;
+                    y += Block.Height;
                     break;
             }
 

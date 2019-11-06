@@ -15,7 +15,7 @@ namespace Tetris
         private int x;
         private int y;
         private ConsoleColor color;
-        private static int height = 1;
+        private static int height = 2;
         private static int width = height * 2;
         private Point[] area;
 
@@ -104,7 +104,7 @@ namespace Tetris
 
             for (int i = 0; i < height; i++)
             {
-
+                posX = x;
                 for (int j = 0; j < height * 2; j++)
                 {
                     Point current = new Point(posX, posY);
@@ -142,13 +142,13 @@ namespace Tetris
             switch (direction)
             {
                 case ConsoleKey.LeftArrow:
-                    x -= 1;
+                    x -= width;
                     break;
                 case ConsoleKey.RightArrow:
-                    x += 1;
+                    x += width;
                     break;
                 case ConsoleKey.DownArrow:
-                    y += 1;
+                    y += height;
                     break;
             }
 
