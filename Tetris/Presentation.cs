@@ -62,7 +62,7 @@ namespace Tetris
             Console.WriteLine();
             Console.WriteLine();
 
-            Shape bullet2 = new Shape(indent - 2, Console.CursorTop + 1, 4);
+            Shape bullet2 = new Shape(indent - 2, Console.CursorTop + 2, 4);
             bullet2.Arrange();
             bullet2.render();
 
@@ -94,7 +94,7 @@ namespace Tetris
             Console.ReadKey();
 
 
-            Shape bullet3 = new Shape(indent - 2, Console.CursorTop + 1, 3);
+            Shape bullet3 = new Shape(indent - 2, Console.CursorTop + 4, 3);
             bullet3.Arrange();
             bullet3.render();
 
