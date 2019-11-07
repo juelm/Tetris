@@ -34,6 +34,14 @@ namespace Tetris
 
             ConsoleKey initial = Console.ReadKey().Key;
             bool play = true;
+
+            if(initial == ConsoleKey.P)
+            {
+                Block.Height = 1;
+                Presentation tetris = new Presentation();
+                tetris.Start();
+            }
+
             if (initial == ConsoleKey.Q) play = false;
 
             while (play)

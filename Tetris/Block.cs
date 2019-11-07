@@ -15,7 +15,7 @@ namespace Tetris
         private int x;
         private int y;
         private ConsoleColor color;
-        private static int height = 2;
+        private static int height = 1;
         private static int width = height * 2;
         private Point[] area;
 
@@ -69,6 +69,11 @@ namespace Tetris
             get
             {
                 return height;
+            }
+
+            set
+            {
+                height = value;
             }
         }
 
