@@ -16,9 +16,14 @@ namespace Tetris
             Console.Clear();
 
             SplashWriter title = new SplashWriter(5, 5, 1, ConsoleColor.Black);
+            SplashWriter label = new SplashWriter(5, 5, 1, ConsoleColor.Black);
 
 
-            title.WriteWord("TETRIS", ConsoleColor.Black, TextStyles.Calico);
+            label.WriteWord("TETRIS", ConsoleColor.Black, TextStyles.Calico);
+            title.WriteWord("", ConsoleColor.Black, TextStyles.Calico);
+
+
+
             //title.Y = 17;
             //title.BackGround = ConsoleColor.White;
             //title.FontWidth = 1;
