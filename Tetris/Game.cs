@@ -213,7 +213,7 @@ namespace Tetris
                                 setStats();
 
 
-                                if (nextLevel >= 5)
+                                if (nextLevel >= 2)
                                 {
                                     nextLevel = 0;
                                     level++;

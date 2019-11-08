@@ -14,7 +14,7 @@ namespace Tetris
         //private Point position;
         private int x;
         private int y;
-        private ConsoleColor color;
+        private ConsoleColor color; 
         private static int height = 1;
         private static int width = height * 2;
         private Point[] area;

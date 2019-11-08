@@ -9,5 +9,19 @@ namespace Tetris
         {
             methods = methodList;
         }
+
+        public void displayMethods()
+        {
+            //int textY = cursorY + 3;
+            //Console.SetCursorPosition(cursorX + 3, cursorY + 3);
+            for(int i = 0; i < methods.Length; i++)
+            {
+                Console.SetCursorPosition(cursorX + 3, cursorY + 3 + i);
+                Console.Write(methods[i]);
+                
+
+            }
+
+        }
     }
 }
