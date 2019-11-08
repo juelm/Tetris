@@ -1,30 +1,28 @@
 ﻿<Properties StartupConfiguration="{5E3DD3A3-B881-47BD-BD64-84AD0A96CAFC}|Default">
   <MonoDevelop.Ide.ItemProperties.Tetris PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/Presentation.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Tetris/UML.cs">
     <Files>
       <File FileName="Tetris/Block.cs" Line="211" Column="1" />
-      <File FileName="Tetris/Board.cs" Line="379" Column="1" />
-      <File FileName="Tetris/Game.cs" Line="168" Column="1" />
-      <File FileName="Tetris/Program.cs" Line="48" Column="1" />
-      <File FileName="Tetris/Shape.cs" Line="313" Column="1" />
-      <File FileName="Tetris/ShapeDictionary.cs" Line="1" Column="1" />
-      <File FileName="Tetris/SplashWriter.cs" Line="16" Column="15" />
-      <File FileName="Tetris/L.cs" Line="1" Column="1" />
-      <File FileName="Tetris/Point.cs" Line="42" Column="1" />
-      <File FileName="Tetris/Presentation.cs" Line="1" Column="1" />
+      <File FileName="Tetris/Board.cs" />
+      <File FileName="Tetris/Game.cs" />
+      <File FileName="Tetris/Program.cs" />
+      <File FileName="Tetris/Shape.cs" />
+      <File FileName="Tetris/ShapeDictionary.cs" />
+      <File FileName="Tetris/SplashWriter.cs" />
+      <File FileName="Tetris/L.cs" />
+      <File FileName="Tetris/Point.cs" />
+      <File FileName="Tetris/Presentation.cs" />
+      <File FileName="Tetris/UML.cs" Line="4" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Tetris" expanded="True">
             <Node name="Tetris" expanded="True">
-              <Node name="Presentation.cs" selected="True" />
+              <Node name="UML.cs" selected="True" />
             </Node>
           </Node>
         </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

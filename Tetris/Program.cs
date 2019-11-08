@@ -15,7 +15,7 @@ namespace Tetris
         public static int startX = 5;
         public static int startY = 5;
         public static int margin = 1;
-        public static int boardHeight = Block.Height * 25;
+        public static int boardHeight = Block.Height * 26;
         public static int boardWidth = Block.Width * 18 + margin;
         public static int ms = 500;
 
